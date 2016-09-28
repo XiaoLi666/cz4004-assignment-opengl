@@ -37,6 +37,7 @@ static int obj_mode = 0;
 static int xform_mode = 0; 
 
 #include "CMFileLoader.h"
+#include "CModel.h"
 using namespace CZ4004;
 
 void menu(int value)
@@ -58,8 +59,8 @@ void menu(int value)
 void createmenu(void)
 {
 	// Testing code added by ZiLi
-	CMFileLoader::GetInstance()->Load("bottle.m");
-
+	// CMFileLoader::GetInstance()->Load("bottle.m");
+	CModel * new_model = new CModel("bottle.m");
 
 	// Create a submenu, this has to be done first.
 	submenid = glutCreateMenu(menu);

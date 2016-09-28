@@ -3,41 +3,24 @@
 
 #include <vector>
 #include "CMovableObject.h"
+#include "CMeshDataStruct.h"
 
 namespace CZ4004
 {
-	struct HE_vert;
-	struct HE_face;
-
-	struct HE_edge
-	{
-		HE_vert * vert;
-		HE_edge * pair;
-		HE_face * face;
-		HE_edge * prev;
-		HE_edge * next;
-	};
-
-	struct HE_vert
-	{
-		float x, y, z;
-		HE_edge * edge;
-	};
-
-	struct HE_face
-	{
-		HE_edge * edge;
-	};
-
 	class CModel : public CMovableObject
 	{
 	public:
-		void Initialization(/*TODO:*/);
+		CModel(const std::string & file_name);
 		virtual void Render();
+		virtual void Update();
+
+	private:
+		void Create();
 
 	private:
 		std::vector<HE_vert> m_vertices;
 		std::vector<HE_face> m_faces;
+		std::vector<Face_Loaded_Data> m_facesLoadedData;
 	};
 }
 

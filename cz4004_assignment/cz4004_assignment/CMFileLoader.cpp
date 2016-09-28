@@ -8,65 +8,68 @@ using namespace std;
 
 CMFileLoader * CMFileLoader::m_instance = 0;
 
-void CMFileLoader::Load(const std::string & file_name)
+void CMFileLoader::Load(const std::string & file_name, 
+	std::vector<HE_vert> & vertices, 
+	std::vector<Face_Loaded_Data> & faces_loaded_data)
 {
-	// FILE *f;
-	// f = std::fopen(filePath,"r");
-
 	string name;
 	ifstream myfile;
 	myfile.open((CUtilities::directory+file_name).c_str());
 	
 	if (myfile.is_open())
 	{
-		printf("The file %s is being loaded... \n", file_name.c_str());
+		printf("'%s' is being loaded... \n", file_name.c_str());
 
-		string s;
+		string type;
+
 		int vertex_index;
 		float vertex_x;
 		float vertex_y;
 		float vertex_z;
 
-		while (myfile >> s)
+		int face_index;
+		int vertex1;
+		int vertex2;
+		int vertex3;
+
+		while (myfile >> type)
 		{
-			if (s == "Vertex")
+			if (type == "Vertex")
 			{
-				myfile >> s; // index
-				
-				myfile >> s; // x
-				
-				myfile >> s; // y
-				
-				myfile >> s; // z
+				myfile >> vertex_index; // index
+				myfile >> vertex_x; // x
+				myfile >> vertex_y; // y
+				myfile >> vertex_z; // z
+
+				HE_vert new_vert;
+				new_vert.x = vertex_x;
+				new_vert.y = vertex_y;
+				new_vert.z = vertex_z;
+				new_vert.edge = nullptr;
+				vertices.push_back(new_vert);
+
+#ifndef _DEBUG
+				printf("Vertex Info: %d,%f,%f,%f \n", vertex_index, vertex_x, vertex_y, vertex_z);
+#endif
 			}
-			else if (s == "Face")
+			else if (type == "Face")
 			{
-				myfile >> s; // index
-				
-				myfile >> s; // x
-				
-				myfile >> s; // y
-				
-				myfile >> s; // z
+				myfile >> face_index; // index
+				myfile >> vertex1; // v 1
+				myfile >> vertex2; // v 2
+				myfile >> vertex3; // v 3
+
+				Face_Loaded_Data new_face_loaded_data;
+				new_face_loaded_data.vertex1 = vertex1;
+				new_face_loaded_data.vertex2 = vertex2;
+				new_face_loaded_data.vertex3 = vertex3;
+				faces_loaded_data.push_back(new_face_loaded_data);
+
+#ifndef _DEBUG
+				printf("Face Info: %d,%d,%d,%d \n", face_index, vertex1, vertex2, vertex3);
+#endif
 			}
 		}
-
-		//while (getline(myfile, s))
-		//{
-		//	if (s[0] == '#')
-		//		continue;
-		//	else if (s[0] == 'V')
-		//	{
-		//		// fscanf(myfile,"Vertex %d %f %f %f \n", &vertex_index, &vertex_x, &vertex_y, &vertex_z) == 7
-		//	}
-		//		// TODO: initialize for vertex
-		//	// else if (s[0] == 'F')
-		//		// TODO: initialize for face
-
-		//	printf("The s is            %c \n", s[0]);
-		//}
-
-		printf("Loading finished! \n");
 	}
 	
 	myfile.close();

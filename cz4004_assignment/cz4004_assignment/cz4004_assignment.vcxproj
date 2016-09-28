@@ -50,13 +50,13 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>C:\Users\Wang ZiLi\Desktop\CZ4004\cz4004_assignment\glut;$(SolutionDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\Users\Wang ZiLi\Desktop\cz4004-assignment-opengl\cz4004_assignment\glut;$(SolutionDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalDependencies>glut32.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>C:\Users\Wang ZiLi\Desktop\CZ4004\cz4004_assignment\glut;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>C:\Users\Wang ZiLi\Desktop\cz4004-assignment-opengl\cz4004_assignment\glut;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -87,6 +87,7 @@
   <ItemGroup>
     <ClInclude Include="CBoundingBox.h" />
     <ClInclude Include="CGround.h" />
+    <ClInclude Include="CMeshDataStruct.h" />
     <ClInclude Include="CMFileLoader.h" />
     <ClInclude Include="CModel.h" />
     <ClInclude Include="CMovableObject.h" />

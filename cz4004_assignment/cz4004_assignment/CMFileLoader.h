@@ -2,6 +2,8 @@
 #define __CMFILELOADER_H__
 
 #include <string>
+#include <vector>
+#include "CMeshDataStruct.h"
 
 namespace CZ4004
 {
@@ -24,7 +26,9 @@ namespace CZ4004
 			return m_instance;
 		}
 
-		void Load(const std::string & file_name);
+		void Load(const std::string & file_name, 
+			std::vector<HE_vert> & vertices, 
+			std::vector<Face_Loaded_Data> & faces_loaded_data);
 	};
 }
 
