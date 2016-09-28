@@ -27,8 +27,8 @@ namespace CZ4004
 		}
 
 		void Load(const std::string & file_name, 
-			std::vector<HE_vert> & vertices, 
-			std::vector<Face_Loaded_Data> & faces_loaded_data);
+			std::vector<HE_vert *> & vertices, 
+			std::vector<Face_Loaded_Data *> & faces_loaded_data);
 	};
 }
 

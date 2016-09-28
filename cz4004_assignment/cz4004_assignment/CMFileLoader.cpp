@@ -9,8 +9,8 @@ using namespace std;
 CMFileLoader * CMFileLoader::m_instance = 0;
 
 void CMFileLoader::Load(const std::string & file_name, 
-	std::vector<HE_vert> & vertices, 
-	std::vector<Face_Loaded_Data> & faces_loaded_data)
+	std::vector<HE_vert *> & vertices, 
+	std::vector<Face_Loaded_Data *> & faces_loaded_data)
 {
 	string name;
 	ifstream myfile;
@@ -41,11 +41,11 @@ void CMFileLoader::Load(const std::string & file_name,
 				myfile >> vertex_y; // y
 				myfile >> vertex_z; // z
 
-				HE_vert new_vert;
-				new_vert.x = vertex_x;
-				new_vert.y = vertex_y;
-				new_vert.z = vertex_z;
-				new_vert.edge = nullptr;
+				HE_vert * new_vert = new HE_vert();
+				new_vert->x = vertex_x;
+				new_vert->y = vertex_y;
+				new_vert->z = vertex_z;
+				new_vert->edge = nullptr;
 				vertices.push_back(new_vert);
 
 #ifndef _DEBUG
@@ -59,10 +59,10 @@ void CMFileLoader::Load(const std::string & file_name,
 				myfile >> vertex2; // v 2
 				myfile >> vertex3; // v 3
 
-				Face_Loaded_Data new_face_loaded_data;
-				new_face_loaded_data.vertex1 = vertex1;
-				new_face_loaded_data.vertex2 = vertex2;
-				new_face_loaded_data.vertex3 = vertex3;
+				Face_Loaded_Data * new_face_loaded_data = new Face_Loaded_Data();
+				new_face_loaded_data->vertex1 = vertex1-1;
+				new_face_loaded_data->vertex2 = vertex2-1;
+				new_face_loaded_data->vertex3 = vertex3-1;
 				faces_loaded_data.push_back(new_face_loaded_data);
 
 #ifndef _DEBUG

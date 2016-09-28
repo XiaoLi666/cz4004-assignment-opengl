@@ -16,11 +16,13 @@ namespace CZ4004
 
 	private:
 		void Create();
+		void ClearCachedData();
 
 	private:
-		std::vector<HE_vert> m_vertices;
-		std::vector<HE_face> m_faces;
-		std::vector<Face_Loaded_Data> m_facesLoadedData;
+		std::vector<HE_vert *> m_vertices;
+		std::vector<HE_face *> m_faces;
+		std::vector<HE_edge *> m_edges;
+		std::vector<Face_Loaded_Data *> m_facesLoadedData;
 	};
 }
 

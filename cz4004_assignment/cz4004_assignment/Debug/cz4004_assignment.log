@@ -1,4 +1,4 @@
-﻿Build started 9/28/2016 3:15:43 PM.
+﻿Build started 9/28/2016 7:00:24 PM.
      1>Project "C:\Users\Wang ZiLi\Desktop\cz4004-assignment-opengl\cz4004_assignment\cz4004_assignment\cz4004_assignment.vcxproj" on node 2 (build target(s)).
      1>InitializeBuildStatus:
          Creating "Debug\cz4004_assignment.unsuccessfulbuild" because "AlwaysCreate" was specified.
@@ -28,4 +28,4 @@
 
 Build succeeded.
 
-Time Elapsed 00:00:00.94
+Time Elapsed 00:00:00.84
