@@ -2,6 +2,7 @@
 #include "CMFileLoader.h"
 
 using namespace CZ4004;
+using namespace std;
 
 CModel::CModel(const std::string & file_name)
 {
@@ -22,6 +23,8 @@ void CModel::Create()
 		HE_vert * v2 = m_vertices[m_facesLoadedData[i]->vertex2];
 		HE_vert * v3 = m_vertices[m_facesLoadedData[i]->vertex3];
 
+		// TODO: going to check the min and max vertex of the whole 3D mesh
+
 		HE_face * new_face = new HE_face();
 
 		HE_edge * e_1_to_2 = new HE_edge();
@@ -35,29 +38,38 @@ void CModel::Create()
 		v2->edge = e_2_to_3;
 		v3->edge = e_3_to_1;
 
-		// Create edge 1:
-		e_1_to_2->vert = v1;
-		e_1_to_2->face = new_face;
-		e_1_to_2->next = e_2_to_3;
-		e_1_to_2->prev = e_3_to_1;
-		e_1_to_2->pair = nullptr;
-
-		// Create edge 2:
-		e_2_to_3->vert = v2;
-		e_2_to_3->face = new_face;
-		e_2_to_3->next = e_3_to_1;
-		e_2_to_3->prev = e_1_to_2;
-		e_2_to_3->pair = nullptr;
-
-		// Create edge 3:
-		e_3_to_1->vert = v3;
-		e_3_to_1->face = new_face;
-		e_3_to_1->next = e_1_to_2;
-		e_3_to_1->prev = e_2_to_3;
-		e_3_to_1->pair = nullptr;
+		InitEdge(e_1_to_2,v1,v2,new_face,e_3_to_1,e_2_to_3);
+		InitEdge(e_2_to_3,v2,v3,new_face,e_1_to_2,e_3_to_1);
+		InitEdge(e_3_to_1,v3,v1,new_face,e_2_to_3,e_1_to_2);
 	}
 
 	printf("3D mesh has been created! \n");
+}
+
+void CModel::InitEdge(HE_edge * edge_to_init, HE_vert * vertex, HE_vert * vert_to_pair, HE_face * face, HE_edge * prev, HE_edge * next)
+{
+	edge_to_init->vert = vertex;
+	edge_to_init->face = face;
+	edge_to_init->prev = prev;
+	edge_to_init->next = next;
+	PairEdge(vert_to_pair, edge_to_init);
+}
+
+void CModel::PairEdge(HE_vert * vertex, HE_edge * edge)
+{
+	// Go to edges to pair list to check whether there is a edge waiting to be paired
+	if (m_edgesToPair.find(vertex) == m_edgesToPair.end())
+	{
+		m_edgesToPair.insert(pair<HE_vert *, HE_edge *>(vertex, edge));
+	}
+	else
+	{
+		edge->pair = m_edgesToPair[vertex];
+		m_edgesToPair[vertex]->pair = edge;
+		map<HE_vert *, HE_edge *>::iterator itr = m_edgesToPair.find(vertex);
+		if (itr != m_edgesToPair.end())
+			m_edgesToPair.erase(itr);
+	}
 }
 
 void CModel::ClearCachedData()
