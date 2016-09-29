@@ -1,6 +1,8 @@
 #ifndef __CHALF_EDGE_H__
 #define __CHALF_EDGE_H__
 
+#include "CVector3.h"
+
 namespace CZ4004
 {
 	struct HE_vert;
@@ -16,23 +18,22 @@ namespace CZ4004
 		HE_face * face;
 		HE_edge * prev;
 		HE_edge * next;
-
-		HE_edge(){};
+		HE_edge():vert(nullptr),pair(nullptr),face(nullptr),prev(nullptr),next(nullptr){};
 	};
 
 	struct HE_vert
 	{
-		float x, y, z;
+		CVector3 * coord;
+		CVector3 * normal;
 		HE_edge * edge;
-
-		HE_vert(){}
+		HE_vert():coord(nullptr),normal(nullptr),edge(nullptr){}
 	};
 
 	struct HE_face
 	{
 		HE_edge * edge;
-
-		HE_face(){}
+		CVector3 * normal;
+		HE_face():edge(nullptr),normal(nullptr){}
 	};
 
 	/*----------------------------------------*/

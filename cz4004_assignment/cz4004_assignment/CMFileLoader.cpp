@@ -40,15 +40,12 @@ void CMFileLoader::Load(const std::string & file_name,
 				myfile >> vertex_x; // x
 				myfile >> vertex_y; // y
 				myfile >> vertex_z; // z
-
 				HE_vert * new_vert = new HE_vert();
-				new_vert->x = vertex_x;
-				new_vert->y = vertex_y;
-				new_vert->z = vertex_z;
+				new_vert->coord = new CVector3(vertex_x, vertex_y, vertex_z);
 				new_vert->edge = nullptr;
 				vertices.push_back(new_vert);
 
-#ifndef _DEBUG
+#ifdef _DEBUG_
 				printf("Vertex Info: %d,%f,%f,%f \n", vertex_index, vertex_x, vertex_y, vertex_z);
 #endif
 			}
@@ -65,7 +62,7 @@ void CMFileLoader::Load(const std::string & file_name,
 				new_face_loaded_data->vertex3 = vertex3-1;
 				faces_loaded_data.push_back(new_face_loaded_data);
 
-#ifndef _DEBUG
+#ifdef _DEBUG_
 				printf("Face Info: %d,%d,%d,%d \n", face_index, vertex1, vertex2, vertex3);
 #endif
 			}

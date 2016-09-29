@@ -18,16 +18,16 @@ namespace CZ4004
 	private:
 		void Create();
 		void InitEdge(HE_edge * edge_to_init, HE_vert * vertex, HE_vert * vert_to_pair, HE_face * face, HE_edge * prev, HE_edge * next);
-		void PairEdge(HE_vert * vertex, HE_edge * edge);
+		void PairEdge(HE_vert * start, HE_vert * end, HE_edge * edge);
+		void CalNormalForFace(HE_face * face, CVector3 * v1, CVector3 * v2, CVector3 * v3);
+		void CalNormalForAllVertices();
+		void CalMinMaxVertex(HE_vert * v); // TODO: this function seems does not work well
 		void ClearCachedData();
 
 	private:
 		std::vector<HE_vert *> m_vertices;
 		std::vector<HE_face *> m_faces;
 		std::vector<HE_edge *> m_edges;
-
-		// TODO:
-		// Going to find the min and max point coordinates
 		HE_vert * m_minVertex;
 		HE_vert * m_maxVertex;
 
