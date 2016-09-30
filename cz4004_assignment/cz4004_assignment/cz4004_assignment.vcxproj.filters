@@ -24,9 +24,6 @@
     <ClCompile Include="main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="CUtilities.cpp">
-      <Filter>Header Files\Engine</Filter>
-    </ClCompile>
     <ClCompile Include="CMFileLoader.cpp">
       <Filter>Header Files\Engine</Filter>
     </ClCompile>
@@ -42,11 +39,11 @@
     <ClCompile Include="CVector3.cpp">
       <Filter>Header Files\Engine</Filter>
     </ClCompile>
+    <ClCompile Include="CUtilities.cpp">
+      <Filter>Header Files\Engine</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="CUtilities.h">
-      <Filter>Header Files\Engine</Filter>
-    </ClInclude>
     <ClInclude Include="CVector3.h">
       <Filter>Header Files\Engine</Filter>
     </ClInclude>
@@ -69,6 +66,12 @@
       <Filter>Header Files\Engine</Filter>
     </ClInclude>
     <ClInclude Include="CBoundingBox.h">
+      <Filter>Header Files\Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="CCamera.h">
+      <Filter>Header Files\Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="CUtilities.h">
       <Filter>Header Files\Engine</Filter>
     </ClInclude>
   </ItemGroup>

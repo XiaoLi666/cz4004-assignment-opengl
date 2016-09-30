@@ -46,13 +46,56 @@ void CModel::Create()
 		InitEdge(e_2_to_3,v2,v3,new_face,e_1_to_2,e_3_to_1);
 		InitEdge(e_3_to_1,v3,v1,new_face,e_2_to_3,e_1_to_2);
 
+		//PairEdge(v1, v2, e_1_to_2);
+		//PairEdge(v2, v3, e_2_to_3);
+		//PairEdge(v3, v1, e_3_to_1);
+		BuildPairEdgeStruct(e_1_to_2);
+		BuildPairEdgeStruct(e_2_to_3);
+		BuildPairEdgeStruct(e_3_to_1);
+
 		new_face->edge = e_1_to_2;
 		m_faces.push_back(new_face);
 	}
 
+	FindPairedEdgesForAllEdges();
 	CalNormalForAllVertices();
 
 	printf("3D mesh has been created! \n");
+}
+
+void CModel::BuildPairEdgeStruct(HE_edge * edge)
+{
+	map<HE_vert *, deque<HE_edge *>>::iterator itr = m_edgesToPair.find(edge->vert);
+	if (itr == m_edgesToPair.end())
+	{
+		deque<HE_edge *> new_deque;
+		new_deque.push_back(edge);
+		m_edgesToPair.insert(pair<HE_vert *, deque<HE_edge *>>(edge->vert, new_deque));
+	}
+	else
+	{
+		(*itr).second.push_back(edge);
+	}
+}
+
+void CModel::FindPairedEdgesForAllEdges()
+{
+	for (size_t i = 0; i < m_edges.size(); ++ i)
+	{
+		HE_edge * edge = m_edges[i];
+		if (!edge->pair)
+		{
+			deque<HE_edge *> d = m_edgesToPair[edge->next->vert];
+			for (size_t j = 0; j < d.size(); ++ j)
+			{
+				if (d[j]->next->vert == edge->vert)
+				{
+					d[j]->pair = edge;
+					edge->pair = d[j];
+				}
+			}
+		}
+	}
 }
 
 void CModel::InitEdge(HE_edge * edge_to_init, HE_vert * vertex, HE_vert * vert_to_pair, HE_face * face, HE_edge * prev, HE_edge * next)
@@ -61,24 +104,78 @@ void CModel::InitEdge(HE_edge * edge_to_init, HE_vert * vertex, HE_vert * vert_t
 	edge_to_init->face = face;
 	edge_to_init->prev = prev;
 	edge_to_init->next = next;
-	PairEdge(vertex, vert_to_pair, edge_to_init);
+	// PairEdge(vertex, vert_to_pair, edge_to_init);
 	m_edges.push_back(edge_to_init);
 }
 
 void CModel::PairEdge(HE_vert * start, HE_vert * end, HE_edge * edge)
 {
-	if (m_edgesToPair.find(end) == m_edgesToPair.end())
-	{
-		m_edgesToPair.insert(pair<HE_vert *, HE_edge *>(start, edge));
-	}
-	else
-	{
-		edge->pair = m_edgesToPair[end];
-		m_edgesToPair[end]->pair = edge;
-		map<HE_vert *, HE_edge *>::iterator itr = m_edgesToPair.find(end);
-		if (itr != m_edgesToPair.end())
-			m_edgesToPair.erase(itr);
-	}
+	//map<HE_vert *, std::vector<HE_edge *>>::iterator map_itr = m_edgesToPair.find(end);
+	//if (map_itr == m_edgesToPair.end()) // cannot find the pair edge, store this edge first
+	//{
+	//	vector<HE_edge *> new_vec;
+	//	new_vec.push_back(edge);
+	//	m_edgesToPair.insert(pair<HE_vert *, std::vector<HE_edge *>>(start, new_vec));
+	//}
+	//else // itr does not == m_edgesToPair.end()
+	//{
+	//	bool found = false;
+	//	for (size_t i = 0; i < m_edgesToPair[end].size(); ++ i)
+	//	{
+	//		if (m_edgesToPair[end][i]->next->vert == start)
+	//		{
+	//			edge->pair = m_edgesToPair[end][i];
+	//			m_edgesToPair[end][i]->pair = edge;
+	//			// printf("oh well! \n");
+	//			break;
+	//		}
+	//	}
+	//	if (!found)
+	//	{
+	//		m_edgesToPair[end].push_back(edge);
+	//	}
+
+		//bool found = false;
+		//for (std::list<HE_edge *>::iterator list_itr = m_edgesToPair[end].begin(); 
+		//	list_itr != m_edgesToPair[end].end(); 
+		//	++ list_itr)
+		//{
+		//	if ((*list_itr)->next->vert == start) // find the pair
+		//	{
+		//		found = true;
+
+		//		(*list_itr)->pair = edge;
+		//		edge->pair = (*list_itr);
+
+		//		// remove this list_itr from the list<>
+		//		m_edgesToPair[end].erase(list_itr);
+		//		break;
+		//	}
+		//}
+
+		//if (!found)
+		//{
+		//	itr->second.push_back(edge);
+		//}
+
+		//if (m_edgesToPair[end].empty())
+		//{
+		//	m_edgesToPair.erase(itr);
+		//}
+	//}
+
+	//if (m_edgesToPair.find(end) == m_edgesToPair.end())
+	//{
+	//	m_edgesToPair.insert(pair<HE_vert *, HE_edge *>(start, edge));
+	//}
+	//else if (m_edgesToPair[end]->next->vert == start)
+	//{
+	//	edge->pair = m_edgesToPair[end];
+	//	m_edgesToPair[end]->pair = edge;
+	//	map<HE_vert *, HE_edge *>::iterator itr = m_edgesToPair.find(end);
+	//	if (itr != m_edgesToPair.end())
+	//		m_edgesToPair.erase(itr);
+	//}
 }
 
 void CModel::CalNormalForFace(HE_face * face, CVector3 * v1, CVector3 * v2, CVector3 * v3)
@@ -144,20 +241,57 @@ void CModel::ClearCachedData()
 
 void CModel::Render()
 {
-	for (size_t i = 0; i < m_vertices.size(); ++ i)
-	{
-		//// glShadeModel(GL_SMOOTH);
-		//glBegin(GL_TRIANGLES);
-		//	// glColor3f();
-		//	// glNormal3f();
-		//	glVertex3f();
-		//	glVertex3f();
-		//	glVertex3f();
-		//glEnd();
+	//for (size_t i = 0; i < m_vertices.size(); ++ i)
+	//{
+	////	glBegin(GL_POINTS);
+	////	glVertex3f(m_vertices[i]->coord->x,m_vertices[i]->coord->y,m_vertices[i]->coord->z);
+	////	glEnd();
 
-		glBegin(GL_POINTS);
-		glVertex3f(m_vertices[i]->coord->x,m_vertices[i]->coord->y,m_vertices[i]->coord->z);
+	//	glBegin(GL_LINES);
+	//	glVertex3f(m_vertices[i]->coord->x,m_vertices[i]->coord->y,m_vertices[i]->coord->z);
+	//	glVertex3f(	m_vertices[i]->coord->x+m_vertices[i]->normal->x * 0.01,
+	//				m_vertices[i]->coord->y+m_vertices[i]->normal->y * 0.01,
+	//				m_vertices[i]->coord->z+m_vertices[i]->normal->z * 0.01);
+	//	glEnd();
+	//}
+
+	glShadeModel(GL_SMOOTH); // GL_FLAT or GL_SMOOTH
+	for (unsigned int i = 0; i < m_faces.size(); ++ i)
+	{
+		HE_edge * edge = m_faces[i]->edge;
+
+		CVector3 * n1 = edge->vert->normal;
+		CVector3 * n2 = edge->next->vert->normal;
+		CVector3 * n3 = edge->next->next->vert->normal;
+
+		glBegin(GL_TRIANGLES);
+			glNormal3f(n1->x, n1->y, n1->z);
+			glVertex3f(edge->vert->coord->x, edge->vert->coord->y, edge->vert->coord->z);
+			
+			glNormal3f(n2->x, n2->y, n2->z);
+			edge = edge->next;
+			glVertex3f(edge->vert->coord->x, edge->vert->coord->y, edge->vert->coord->z);
+			
+			glNormal3f(n3->x, n3->y, n3->z);
+			edge = edge->next;
+			glVertex3f(edge->vert->coord->x, edge->vert->coord->y, edge->vert->coord->z);
 		glEnd();
+
+		// glNormal3f(n1->x, n1->y, n1->z);
+		// glVertex3f(edge->vert->coord->x, edge->vert->coord->y, edge->vert->coord->z);
+		// glNormal3f(n2->x, n2->y, n2->z);
+		// glVertex3f(edge->vert->coord->x, edge->vert->coord->y, edge->vert->coord->z);
+		// glNormal3f(n3->x, n3->y, n3->z);
+		// glVertex3f(edge->vert->coord->x, edge->vert->coord->y, edge->vert->coord->z);
+
+		//glBegin(GL_TRIANGLES);
+		// glNormal3f(m_faces[i]->normal->x, m_faces[i]->normal->y, m_faces[i]->normal->z);
+		// glVertex3f(edge->vert->coord->x, edge->vert->coord->y, edge->vert->coord->z);
+		// edge = edge->next;
+		// glVertex3f(edge->vert->coord->x, edge->vert->coord->y, edge->vert->coord->z);	
+		// edge = edge->next;
+		// glVertex3f(edge->vert->coord->x, edge->vert->coord->y, edge->vert->coord->z);
+		// glEnd();
 	}
 }
 

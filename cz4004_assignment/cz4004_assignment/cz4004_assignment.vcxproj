@@ -90,6 +90,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CBoundingBox.h" />
+    <ClInclude Include="CCamera.h" />
     <ClInclude Include="CGround.h" />
     <ClInclude Include="CMeshDataStruct.h" />
     <ClInclude Include="CMFileLoader.h" />

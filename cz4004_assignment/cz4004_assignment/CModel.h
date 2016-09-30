@@ -3,6 +3,7 @@
 
 #include <vector>
 #include <map>
+#include <deque>
 #include "CMovableObject.h"
 #include "CMeshDataStruct.h"
 
@@ -24,15 +25,21 @@ namespace CZ4004
 		void CalMinMaxVertex(HE_vert * v); // TODO: this function seems does not work well
 		void ClearCachedData();
 
+		void BuildPairEdgeStruct(HE_edge * edge);
+		void FindPairedEdgesForAllEdges();
+
 	private:
 		std::vector<HE_vert *> m_vertices;
 		std::vector<HE_face *> m_faces;
 		std::vector<HE_edge *> m_edges;
 		HE_vert * m_minVertex;
-		HE_vert * m_maxVertex;
+		HE_vert * m_maxVertex; 
 
 		std::vector<Face_Loaded_Data *> m_facesLoadedData;
-		std::map<HE_vert *, HE_edge *> m_edgesToPair;
+
+		// TODO: this data structure is wrong
+		// std::map<HE_vert *, HE_edge *> m_edgesToPair;
+		std::map<HE_vert *, std::deque<HE_edge *>> m_edgesToPair;
 	};
 }
 

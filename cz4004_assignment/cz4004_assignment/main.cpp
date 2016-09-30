@@ -61,38 +61,40 @@ void menu(int value)
 
 void createmenu(void)
 {
-	// Testing code added by ZiLi
-	// CMFileLoader::GetInstance()->Load("bottle.m");
-	new_model = new CModel("bimba.m");
-	// CVector3 * v1 = new CVector3(2.0f,0.0f,0.0f);
-	// CVector3 * v2 = new CVector3(0.0f,0.0f,2.0f);
-	// CVector3 * cp = v1->CrossProduct(v2);
-	// cp->Normalize();
+	//// Testing code added by ZiLi
+	//// CMFileLoader::GetInstance()->Load("bottle.m");
+	//new_model = new CModel("bimba.m");
+	//// new_model = new CModel("cap.m");
+	//// CVector3 * v1 = new CVector3(2.0f,0.0f,0.0f);
+	//// CVector3 * v2 = new CVector3(0.0f,0.0f,2.0f);
+	//// CVector3 * cp = v1->CrossProduct(v2);
+	//// cp->Normalize();
+	//// setup OpenGL lighting
 
-	// Create a submenu, this has to be done first.
-	submenid = glutCreateMenu(menu);
+	//// Create a submenu, this has to be done first.
+	//submenid = glutCreateMenu(menu);
 
-	// Add sub menu entry
-	glutAddMenuEntry("Teapot", 2);
-	glutAddMenuEntry("Cube", 3);
-	glutAddMenuEntry("Torus", 4);
+	//// Add sub menu entry
+	//glutAddMenuEntry("Teapot", 2);
+	//glutAddMenuEntry("Cube", 3);
+	//glutAddMenuEntry("Torus", 4);
 
-	// Create the menu, this menu becomes the current menu
-	menid = glutCreateMenu(menu);
+	//// Create the menu, this menu becomes the current menu
+	//menid = glutCreateMenu(menu);
 
-	// Create an entry
-	glutAddMenuEntry("Clear", 1);
+	//// Create an entry
+	//glutAddMenuEntry("Clear", 1);
 
-	glutAddSubMenu("Draw", submenid);
-	// Create an entry
-	glutAddMenuEntry("Quit", 0);
+	//glutAddSubMenu("Draw", submenid);
+	//// Create an entry
+	//glutAddMenuEntry("Quit", 0);
 
-	// Let the menu respond on the right mouse button
-	glutAttachMenu(GLUT_RIGHT_BUTTON);
+	//// Let the menu respond on the right mouse button
+	//glutAttachMenu(GLUT_RIGHT_BUTTON);
 }
 
 void disp(void)
-{
+{	
 	glEnable(GL_DEPTH_TEST); 
 
 	// Just clean the screen
@@ -101,103 +103,29 @@ void disp(void)
 	// setup the perspective projection
 	glMatrixMode(GL_PROJECTION); 
 	glLoadIdentity(); 
-	gluPerspective(60, 1, .1, 100); 
+	gluPerspective(60, 1, .1, 200); 
 
-	glMatrixMode(GL_MODELVIEW); 
+	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity(); 
 	gluLookAt(0,0,1,0,0,0,0,1,0); 
 
+	GLfloat light_position[] = { 1.0, 1.0, 1.0, 0.0 };  // light position 
+	GLfloat white_light[] = { 1.0, 1.0, 1.0, 1.0 };  // light color
+	GLfloat lmodel_ambient[] = { 1, 0.1, 0.1, 1.0 };  
+	glLightfv(GL_LIGHT0, GL_POSITION, light_position);
+	glLightfv(GL_LIGHT0, GL_DIFFUSE, white_light);
+	glLightfv(GL_LIGHT0, GL_SPECULAR, white_light);
+	glLightModelfv(GL_LIGHT_MODEL_AMBIENT, lmodel_ambient);
+	glEnable(GL_LIGHTING);
+	glEnable(GL_LIGHT0);  
+
+	glPushMatrix();
 	// rotate and scale the object
 	glRotatef(x_angle, 0, 1,0); 
 	glRotatef(y_angle, 1,0,0); 
 	glScalef(scale_size, scale_size, scale_size); 
-
 	new_model->Render();
-
-	// draw what the user asked
-	if (primitive == 1)
-	{
-		glutPostRedisplay();
-	}
-	else if (primitive == 2)
-	{
-		if (obj_mode == OBJ_WIREFRAME)
-		{
-			glColor3f(0, 0, 1);
-			glutWireTeapot(0.5);
-		}
-		else if (obj_mode == OBJ_SOLID)
-		{
-			glColor3f(0, 0, 1);
-			glutSolidTeapot(0.5);
-		}
-		else
-		{
-			// set the color for the solid teapot
-			glColor3f(0, 0, 1); 
-			 // draw a solid teapot
-			glutSolidTeapot(0.5);  
-			// set the color for the edges
-			glColor3f(1, 0, 0); 
-			// store the existing line width
-			double width;
-			glGetDoublev(GL_LINE_WIDTH, &width);
-			// set the current line width to 2
-			glLineWidth(2); 
-			// draw the teapot again
-			glutWireTeapot(0.501);   
-			// restore the line width
-			glLineWidth(width); 
-		}
-	}
-	else if (primitive == 3)
-	{
-		if (obj_mode == OBJ_WIREFRAME)
-		{
-			glColor3f(0, 0, 1); 
-			glutWireCube(0.5);
-		}
-		else if (obj_mode == OBJ_SOLID)
-		{
-			glColor3f(0, 0, 1); 
-			glutSolidCube(0.5);
-		}
-		else 
-		{
-			glColor3f(0, 0, 1); 
-			glutSolidCube(0.5);  
-			glColor3f(1, 0, 0); 
-			double width;
-			glGetDoublev(GL_LINE_WIDTH, &width);
-			glLineWidth(2); 
-			glutWireCube(0.501);   
-			glLineWidth(width); 
-		}
-	}
-	else if (primitive == 4)
-	{
-		if (obj_mode == OBJ_WIREFRAME)
-		{
-			glColor3f(0, 0, 1); 
-			glutWireTorus(0.3, 0.6, 100, 100);
-		}
-		else if (obj_mode == OBJ_SOLID)
-		{
-			glColor3f(0, 0, 1);			
-			glutSolidTorus(0.3, 0.6, 100, 100);
-		}
-		else
-		{
-			glColor3f(0, 0, 1); 
-			glutSolidTorus(0.3, 0.6, 100, 100);  
-			glColor3f(1, 0, 0); 
-			double width;
-			glGetDoublev(GL_LINE_WIDTH, &width);
-			glLineWidth(2); 
-			glutWireTorus(0.305, 0.605, 100, 100);   
-			glLineWidth(width); 
-		}
-	}
+	glPopMatrix();
   
 	// swap the buffers
 	glutSwapBuffers(); 
@@ -295,6 +223,9 @@ int main(int argc, char **argv)
   
 	// put all the menu functions in one nice procedure
 	createmenu();
+
+	new_model = new CModel("bimba.m");
+	// new_model = new CModel("cap.m");
 
 	// set the clearcolor and the callback
 	glClearColor(0.0,0.0,0.0,0.0);
