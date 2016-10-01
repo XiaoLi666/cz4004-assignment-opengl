@@ -42,6 +42,9 @@
     <ClCompile Include="CUtilities.cpp">
       <Filter>Header Files\Engine</Filter>
     </ClCompile>
+    <ClCompile Include="CCoordinates.cpp">
+      <Filter>Header Files\Engine</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CVector3.h">
@@ -73,6 +76,9 @@
     </ClInclude>
     <ClInclude Include="CUtilities.h">
       <Filter>Header Files\Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="CCoordinates.h">
+      <Filter>Header Files\Models</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

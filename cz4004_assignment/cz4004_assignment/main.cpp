@@ -38,10 +38,12 @@ static int xform_mode = 0;
 
 #include "CMFileLoader.h"
 #include "CModel.h"
+#include "CCoordinates.h"
 #include "CVector3.h"
 using namespace CZ4004;
 
 CModel * new_model;
+CCoordinate * coordinate;
 
 void menu(int value)
 {
@@ -107,9 +109,9 @@ void disp(void)
 
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity(); 
-	gluLookAt(0,0,1,0,0,0,0,1,0); 
+	gluLookAt(10,10,10,0,0,0,0,1,0); 
 
-	GLfloat light_position[] = { 1.0, 1.0, 1.0, 0.0 };  // light position 
+	GLfloat light_position[] = { 10.0, 10.0, 10.0, 0.0 };  // light position 
 	GLfloat white_light[] = { 1.0, 1.0, 1.0, 1.0 };  // light color
 	GLfloat lmodel_ambient[] = { 1, 0.1, 0.1, 1.0 };  
 	glLightfv(GL_LIGHT0, GL_POSITION, light_position);
@@ -126,7 +128,13 @@ void disp(void)
 	glScalef(scale_size, scale_size, scale_size); 
 	new_model->Render();
 	glPopMatrix();
-  
+
+	glDisable(GL_LIGHTING);
+	glDisable(GL_LIGHT0);  
+	coordinate->Render();
+	glEnable(GL_LIGHTING);
+	glEnable(GL_LIGHT0);  
+	
 	// swap the buffers
 	glutSwapBuffers(); 
 }
@@ -225,7 +233,7 @@ int main(int argc, char **argv)
 	createmenu();
 
 	new_model = new CModel("bimba.m");
-	// new_model = new CModel("cap.m");
+	coordinate = new CCoordinate();
 
 	// set the clearcolor and the callback
 	glClearColor(0.0,0.0,0.0,0.0);

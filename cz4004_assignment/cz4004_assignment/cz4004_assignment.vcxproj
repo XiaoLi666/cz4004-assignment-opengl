@@ -81,6 +81,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="CBoundingBox.cpp" />
+    <ClCompile Include="CCoordinates.cpp" />
     <ClCompile Include="CGround.cpp" />
     <ClCompile Include="CMFileLoader.cpp" />
     <ClCompile Include="CModel.cpp" />
@@ -91,6 +92,7 @@
   <ItemGroup>
     <ClInclude Include="CBoundingBox.h" />
     <ClInclude Include="CCamera.h" />
+    <ClInclude Include="CCoordinates.h" />
     <ClInclude Include="CGround.h" />
     <ClInclude Include="CMeshDataStruct.h" />
     <ClInclude Include="CMFileLoader.h" />
