@@ -105,7 +105,7 @@ void disp(void)
 	// setup the perspective projection
 	glMatrixMode(GL_PROJECTION); 
 	glLoadIdentity(); 
-	gluPerspective(60, 1, .1, 200); 
+	gluPerspective(60, 1, .1, 200);
 
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity(); 

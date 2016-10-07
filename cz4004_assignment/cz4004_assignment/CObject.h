@@ -1,6 +1,8 @@
 #ifndef __COBJECT_H__
 #define __COBJECT_H__
 
+#include "CVector3.h"
+
 namespace CZ4004
 {
 	class CObject
@@ -8,11 +10,8 @@ namespace CZ4004
 	public:
 		virtual void Render() = 0;
 
-		// TO BE CONSIDERED
-		// PRE RENDER:
-		void PreRender();
-		// POST RENDER:
-		void PostRender();
+	private:
+		CVector3 m_position;
 	};
 }
 

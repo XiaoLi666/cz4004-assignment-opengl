@@ -10,6 +10,9 @@ namespace CZ4004
 	{
 	public:
 		virtual void Render();
+
+	private:
+		CObject * owner;
 	};
 }
 

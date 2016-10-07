@@ -1,17 +1,25 @@
-﻿Build started 10/1/2016 11:48:09 AM.
+﻿Build started 10/7/2016 5:41:09 PM.
      1>Project "C:\Users\Wang ZiLi\Desktop\cz4004-assignment-opengl\cz4004_assignment\cz4004_assignment\cz4004_assignment.vcxproj" on node 2 (build target(s)).
      1>InitializeBuildStatus:
          Creating "Debug\cz4004_assignment.unsuccessfulbuild" because "AlwaysCreate" was specified.
        ClCompile:
-         C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\bin\CL.exe /c /I"C:\Users\Wang ZiLi\Desktop\cz4004-assignment-opengl\cz4004_assignment\glut" /I"C:\Users\Wang ZiLi\Desktop\cz4004-assignment-opengl\cz4004_assignment\\" /ZI /nologo /W3 /WX- /Od /Oy- /D WIN32 /D _DEBUG /D _CONSOLE /D _UNICODE /D UNICODE /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Debug\\" /Fd"Debug\vc100.pdb" /Gd /TP /analyze- /errorReport:prompt main.cpp
+         C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\bin\CL.exe /c /I"C:\Users\Wang ZiLi\Desktop\cz4004-assignment-opengl\cz4004_assignment\glut" /I"C:\Users\Wang ZiLi\Desktop\cz4004-assignment-opengl\cz4004_assignment\\" /ZI /nologo /W3 /WX- /Od /Oy- /D WIN32 /D _DEBUG /D _CONSOLE /D _UNICODE /D UNICODE /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Debug\\" /Fd"Debug\vc100.pdb" /Gd /TP /analyze- /errorReport:prompt CCamera.cpp CGround.cpp CLight.cpp CModel.cpp main.cpp
          main.cpp
+         Generating Code...
+         Skipping... (no relevant changes detected)
+         CModel.cpp
+         CLight.cpp
+         CGround.cpp
+         CCamera.cpp
        ManifestResourceCompile:
          All outputs are up-to-date.
        Link:
          C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"C:\Users\Wang ZiLi\Desktop\cz4004-assignment-opengl\cz4004_assignment\Debug\cz4004_assignment.exe" /INCREMENTAL /NOLOGO /LIBPATH:"C:\Users\Wang ZiLi\Desktop\cz4004-assignment-opengl\cz4004_assignment\glut" glut32.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /ManifestFile:"Debug\cz4004_assignment.exe.intermediate.manifest" /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /DEBUG /PDB:"C:\Users\Wang ZiLi\Desktop\cz4004-assignment-opengl\cz4004_assignment\Debug\cz4004_assignment.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:\Users\Wang ZiLi\Desktop\cz4004-assignment-opengl\cz4004_assignment\Debug\cz4004_assignment.lib" /MACHINE:X86 Debug\cz4004_assignment.exe.embed.manifest.res
          Debug\CBoundingBox.obj
+         Debug\CCamera.obj
          Debug\CCoordinates.obj
          Debug\CGround.obj
+         Debug\CLight.obj
          Debug\CMFileLoader.obj
          Debug\CModel.obj
          Debug\CUtilities.obj
@@ -30,4 +38,4 @@
 
 Build succeeded.
 
-Time Elapsed 00:00:00.92
+Time Elapsed 00:00:00.88
