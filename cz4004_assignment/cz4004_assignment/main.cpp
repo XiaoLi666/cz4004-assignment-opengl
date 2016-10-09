@@ -109,11 +109,11 @@ void disp(void)
 
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity(); 
-	gluLookAt(10,10,10,0,0,0,0,1,0); 
+	gluLookAt(15,15,15,0,0,0,0,1,0); 
 
-	GLfloat light_position[] = { 10.0, 10.0, 10.0, 0.0 };  // light position 
+	GLfloat light_position[] = { 0.0, 20.0, 0.0, 0.0 };  // light position 
 	GLfloat white_light[] = { 1.0, 1.0, 1.0, 1.0 };  // light color
-	GLfloat lmodel_ambient[] = { 1, 0.1, 0.1, 1.0 };  
+	GLfloat lmodel_ambient[] = { 1.0f, 1.0f, 1.0f, 1.0f };  
 	glLightfv(GL_LIGHT0, GL_POSITION, light_position);
 	glLightfv(GL_LIGHT0, GL_DIFFUSE, white_light);
 	glLightfv(GL_LIGHT0, GL_SPECULAR, white_light);

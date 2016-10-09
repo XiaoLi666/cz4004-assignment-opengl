@@ -6,6 +6,7 @@
 #include <deque>
 #include "CMovableObject.h"
 #include "CMeshDataStruct.h"
+#include "CBoundingBox.h"
 
 namespace CZ4004
 {
@@ -31,14 +32,16 @@ namespace CZ4004
 		std::vector<HE_vert *> m_vertices;
 		std::vector<HE_face *> m_faces;
 		std::vector<HE_edge *> m_edges;
-		HE_vert * m_minVertex;
-		HE_vert * m_maxVertex; 
+		CVector3 * m_minVertex;
+		CVector3 * m_maxVertex;
 
 		std::vector<Face_Loaded_Data *> m_facesLoadedData;
 
 		// TODO: this data structure is wrong
 		// std::map<HE_vert *, HE_edge *> m_edgesToPair;
 		std::map<HE_vert *, std::deque<HE_edge *>> m_edgesToPair;
+
+		CBoundingBox m_boundingBox;
 	};
 }
 

@@ -42,14 +42,14 @@
     <ClCompile Include="CUtilities.cpp">
       <Filter>Header Files\Engine</Filter>
     </ClCompile>
-    <ClCompile Include="CCoordinates.cpp">
-      <Filter>Header Files\Engine</Filter>
-    </ClCompile>
     <ClCompile Include="CLight.cpp">
       <Filter>Header Files\Models</Filter>
     </ClCompile>
     <ClCompile Include="CCamera.cpp">
       <Filter>Header Files\Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="CCoordinates.cpp">
+      <Filter>Header Files\Models</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

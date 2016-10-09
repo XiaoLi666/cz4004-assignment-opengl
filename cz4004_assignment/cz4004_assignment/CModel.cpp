@@ -8,7 +8,8 @@ using namespace CZ4004;
 using namespace std;
 
 CModel::CModel(const std::string & file_name)
-	: m_minVertex(nullptr), m_maxVertex(nullptr)
+	: m_minVertex(nullptr)
+	, m_maxVertex(nullptr)
 {
 	CMFileLoader::GetInstance()->Load(file_name, m_vertices, m_facesLoadedData);
 	printf("'%s' has been loaded! \n", file_name.c_str());
@@ -53,6 +54,8 @@ void CModel::Create()
 		new_face->edge = e_1_to_2;
 		m_faces.push_back(new_face);
 	}
+
+	m_boundingBox.Initialize(this->m_minVertex, this->m_maxVertex);
 
 	FindPairedEdgesForAllEdges();
 	CalNormalForAllVertices();
@@ -153,13 +156,25 @@ void CModel::CalNormalForAllVertices()
 void CModel::CalMinMaxVertex(HE_vert * v)
 {
 	if (!m_minVertex)
-		m_minVertex = v;
+		m_minVertex = new CVector3(v->coord->x, v->coord->y, v->coord->z);
 	if (!m_maxVertex)
-		m_maxVertex = v;
-	else if (v->coord->x < m_minVertex->coord->x && v->coord->y < m_minVertex->coord->y && v->coord->z < m_minVertex->coord->z)
-		m_minVertex = v;
-	else if (v->coord->x > m_maxVertex->coord->x && v->coord->y > m_maxVertex->coord->y && v->coord->z > m_maxVertex->coord->z)
-		m_maxVertex = v;
+		m_maxVertex = new CVector3(v->coord->x, v->coord->y, v->coord->z);
+
+	// Calculate the Min
+	if (m_minVertex->x > v->coord->x)
+		m_minVertex->x = v->coord->x;
+	if (m_minVertex->y > v->coord->y)
+		m_minVertex->y = v->coord->y;
+	if (m_minVertex->z > v->coord->z)
+		m_minVertex->z = v->coord->z;
+
+	// Calculate the Max
+	if (m_maxVertex->x < v->coord->x)
+		m_maxVertex->x = v->coord->x;
+	if (m_maxVertex->y < v->coord->y)
+		m_maxVertex->y = v->coord->y;
+	if (m_maxVertex->z < v->coord->z)
+		m_maxVertex->z = v->coord->z;
 }
 
 void CModel::ClearCachedData()
@@ -204,6 +219,10 @@ void CModel::Render()
 			glVertex3f(edge->vert->coord->x, edge->vert->coord->y, edge->vert->coord->z);
 		glEnd();
 	}
+
+	glDisable(GL_LIGHTING);
+	glDisable(GL_LIGHT0);  
+	m_boundingBox.Render();
 }
 
 void CModel::Update()

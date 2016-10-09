@@ -14,6 +14,11 @@ CVector3::CVector3(float px, float py, float pz)
 {
 }
 
+void CVector3::Set(float px, float py, float pz)
+{
+	x = px; y = py; z = pz;
+}
+
 void CVector3::Normalize()
 {
 	float l = Length();

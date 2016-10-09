@@ -2,6 +2,7 @@
 #define __CBOUNDINGBOX_H__
 
 #include "CObject.h"
+#include "CVector3.h"
 
 namespace CZ4004
 {
@@ -9,10 +10,13 @@ namespace CZ4004
 	class CBoundingBox : public CObject
 	{
 	public:
+		CBoundingBox();
+		void Initialize(CVector3 * min_vertex, CVector3 * max_vertex);
 		virtual void Render();
 
 	private:
-		CObject * owner;
+		CVector3 m_minVertex;
+		CVector3 m_maxVertex;
 	};
 }
 

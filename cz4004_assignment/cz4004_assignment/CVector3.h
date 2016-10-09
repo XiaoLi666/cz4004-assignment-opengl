@@ -8,6 +8,7 @@ namespace CZ4004
 	public:
 		CVector3();
 		CVector3(float,float,float);
+		void Set(float,float,float);
 		void Normalize();
 		float Length() const;
 		float LengthSqrt() const;
@@ -17,7 +18,7 @@ namespace CZ4004
 		void Multiply(float multi);
 
 	public:
-		float x, y, z;
+		float x, y, z; // Not going to make the coordinates as private members for convenience
 	};
 }
 

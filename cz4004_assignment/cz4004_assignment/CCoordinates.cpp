@@ -35,7 +35,6 @@ void CCoordinate::DrawXAxis()
 		glTranslatef(0.0,0.0,cylinder_height);
 			glutSolidCone(0.5,1.5,32,32);
 		glPopMatrix();
-		glutWireCube(3.0);
 	glPopMatrix();
 }
 
@@ -54,7 +53,6 @@ void CCoordinate::DrawYAxis()
 		glTranslatef(0.0,0.0,cylinder_height);
 			glutSolidCone(0.5,1.5,32,32);
 		glPopMatrix();
-		glutWireCube(3.0);
 	glPopMatrix();
 }
 
@@ -71,6 +69,5 @@ void CCoordinate::DrawZAxis()
 		glTranslatef(0.0,0.0,cylinder_height);
 			glutSolidCone(0.5,1.5,32,32);
 		glPopMatrix();
-		glutWireCube(3.0);
 	glPopMatrix();
 }
