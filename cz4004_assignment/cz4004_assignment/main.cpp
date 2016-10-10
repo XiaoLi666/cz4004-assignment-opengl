@@ -63,16 +63,6 @@ void menu(int value)
 
 void createmenu(void)
 {
-	//// Testing code added by ZiLi
-	//// CMFileLoader::GetInstance()->Load("bottle.m");
-	//new_model = new CModel("bimba.m");
-	//// new_model = new CModel("cap.m");
-	//// CVector3 * v1 = new CVector3(2.0f,0.0f,0.0f);
-	//// CVector3 * v2 = new CVector3(0.0f,0.0f,2.0f);
-	//// CVector3 * cp = v1->CrossProduct(v2);
-	//// cp->Normalize();
-	//// setup OpenGL lighting
-
 	//// Create a submenu, this has to be done first.
 	//submenid = glutCreateMenu(menu);
 
@@ -109,7 +99,7 @@ void disp(void)
 
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity(); 
-	gluLookAt(15,15,15,0,0,0,0,1,0); 
+	gluLookAt(15,15,15,0,0,0,0,1,0);
 
 	GLfloat light_position[] = { 0.0, 20.0, 0.0, 0.0 };  // light position 
 	GLfloat white_light[] = { 1.0, 1.0, 1.0, 1.0 };  // light color
@@ -122,7 +112,6 @@ void disp(void)
 	glEnable(GL_LIGHT0);  
 
 	glPushMatrix();
-	// rotate and scale the object
 	glRotatef(x_angle, 0, 1,0); 
 	glRotatef(y_angle, 1,0,0); 
 	glScalef(scale_size, scale_size, scale_size); 
@@ -232,7 +221,7 @@ int main(int argc, char **argv)
 	// put all the menu functions in one nice procedure
 	createmenu();
 
-	new_model = new CModel("bimba.m");
+	new_model = new CModel("bunny.m");
 	coordinate = new CCoordinate();
 
 	// set the clearcolor and the callback

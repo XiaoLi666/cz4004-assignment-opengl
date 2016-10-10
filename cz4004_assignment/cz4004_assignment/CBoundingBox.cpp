@@ -23,8 +23,8 @@ void CBoundingBox::Render()
 {
 	glPushMatrix();
 	glColor3f(1.0f,1.0f,1.0f);
+		glTranslatef((m_maxVertex.x+m_minVertex.x)*0.5f, (m_maxVertex.y+m_minVertex.y)*0.5f, (m_maxVertex.z+m_minVertex.z)*0.5f);
 		glScalef(m_maxVertex.x-m_minVertex.x, m_maxVertex.y-m_minVertex.y, m_maxVertex.z-m_minVertex.z);
-		// glTranslatef((m_maxVertex.x-m_minVertex.x)*0.5f, (m_maxVertex.y-m_minVertex.y)*0.5f, (m_maxVertex.z-m_minVertex.z)*0.5f);
 		glutWireCube(1.0);
 	glPopMatrix();
 }
