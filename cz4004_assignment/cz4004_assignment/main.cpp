@@ -63,26 +63,26 @@ void menu(int value)
 
 void createmenu(void)
 {
-	//// Create a submenu, this has to be done first.
-	//submenid = glutCreateMenu(menu);
+	// Create a submenu, this has to be done first.
+	submenid = glutCreateMenu(menu);
 
-	//// Add sub menu entry
-	//glutAddMenuEntry("Teapot", 2);
-	//glutAddMenuEntry("Cube", 3);
-	//glutAddMenuEntry("Torus", 4);
+	// Add sub menu entry
+	glutAddMenuEntry("Normal Mode", 2);
+	glutAddMenuEntry("Points Mode", 3);
+	glutAddMenuEntry("Wireframe Mode", 4);
 
-	//// Create the menu, this menu becomes the current menu
-	//menid = glutCreateMenu(menu);
+	// Create the menu, this menu becomes the current menu
+	menid = glutCreateMenu(menu);
 
-	//// Create an entry
-	//glutAddMenuEntry("Clear", 1);
+	// Create an entry
+	glutAddMenuEntry("Clear", 1);
 
-	//glutAddSubMenu("Draw", submenid);
-	//// Create an entry
-	//glutAddMenuEntry("Quit", 0);
+	glutAddSubMenu("Draw", submenid);
+	// Create an entry
+	glutAddMenuEntry("Quit", 0);
 
-	//// Let the menu respond on the right mouse button
-	//glutAttachMenu(GLUT_RIGHT_BUTTON);
+	// Let the menu respond on the right mouse button
+	glutAttachMenu(GLUT_RIGHT_BUTTON);
 }
 
 void disp(void)
@@ -99,7 +99,7 @@ void disp(void)
 
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity(); 
-	gluLookAt(15,15,15,0,0,0,0,1,0);
+	gluLookAt(15,15,15,0,0,0,0,1,0);  
 
 	GLfloat light_position[] = { 0.0, 20.0, 0.0, 0.0 };  // light position 
 	GLfloat white_light[] = { 1.0, 1.0, 1.0, 1.0 };  // light color
@@ -109,7 +109,7 @@ void disp(void)
 	glLightfv(GL_LIGHT0, GL_SPECULAR, white_light);
 	glLightModelfv(GL_LIGHT_MODEL_AMBIENT, lmodel_ambient);
 	glEnable(GL_LIGHTING);
-	glEnable(GL_LIGHT0);  
+	glEnable(GL_LIGHT0);
 
 	glPushMatrix();
 	glRotatef(x_angle, 0, 1,0); 

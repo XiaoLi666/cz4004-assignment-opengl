@@ -197,6 +197,8 @@ void CModel::Render()
 	//	glEnd();
 	//}
 
+	glEnable(GL_NORMALIZE);
+
 	glShadeModel(GL_SMOOTH); // GL_FLAT or GL_SMOOTH
 	for (unsigned int i = 0; i < m_faces.size(); ++ i)
 	{
