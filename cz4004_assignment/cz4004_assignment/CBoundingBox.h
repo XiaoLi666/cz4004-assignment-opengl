@@ -17,6 +17,7 @@ namespace CZ4004
 	private:
 		CVector3 m_minVertex;
 		CVector3 m_maxVertex;
+		CVector3 m_coordinates[8];
 	};
 }
 

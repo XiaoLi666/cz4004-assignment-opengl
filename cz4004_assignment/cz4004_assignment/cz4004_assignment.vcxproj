@@ -87,6 +87,7 @@
     <ClCompile Include="CLight.cpp" />
     <ClCompile Include="CMFileLoader.cpp" />
     <ClCompile Include="CModel.cpp" />
+    <ClCompile Include="CObject.cpp" />
     <ClCompile Include="CUtilities.cpp" />
     <ClCompile Include="CVector3.cpp" />
     <ClCompile Include="main.cpp" />

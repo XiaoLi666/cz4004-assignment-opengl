@@ -39,11 +39,26 @@ static int xform_mode = 0;
 #include "CMFileLoader.h"
 #include "CModel.h"
 #include "CCoordinates.h"
+#include "CGround.h"
 #include "CVector3.h"
 using namespace CZ4004;
 
-CModel * new_model;
+CModel * current_model;
 CCoordinate * coordinate;
+CGround * ground;
+
+
+// TODO: going to move this function into a model manager class
+void CreateModel(const string & model_name)
+{
+	if (current_model)
+	{
+		delete current_model;
+		current_model = nullptr;
+	}
+
+	current_model = new CModel(model_name);
+}
 
 void menu(int value)
 {
@@ -56,6 +71,35 @@ void menu(int value)
 	{
 		primitive=value;
 	}
+
+	switch (value)
+	{
+	case 2: // bimba
+		CreateModel("bimba.m");
+		break;
+	case 3: // bottle
+		CreateModel("bottle.m");
+		break;
+	case 4: // bunny
+		CreateModel("bunny.m");
+		break;
+	case 5: // cap
+		CreateModel("cap.m");
+		break;
+	case 6: // eight
+		CreateModel("eight.m");
+		break;
+	case 7: // gargoyle
+		CreateModel("gargoyle.m");
+		break;
+	case 8: // knot
+		CreateModel("knot.m");
+		break;
+	case 9: // status
+		CreateModel("statute.m");
+		break;
+	default:break;
+	}
   
 	// you would want to redraw now
 	glutPostRedisplay();
@@ -67,9 +111,14 @@ void createmenu(void)
 	submenid = glutCreateMenu(menu);
 
 	// Add sub menu entry
-	glutAddMenuEntry("Normal Mode", 2);
-	glutAddMenuEntry("Points Mode", 3);
-	glutAddMenuEntry("Wireframe Mode", 4);
+	glutAddMenuEntry("bimba.m", 2);
+	glutAddMenuEntry("bottle.m", 3);
+	glutAddMenuEntry("bunny.m", 4);
+	glutAddMenuEntry("cap.m", 5);
+	glutAddMenuEntry("eight.m", 6);
+	glutAddMenuEntry("gargoyle.m", 7);
+	glutAddMenuEntry("knot.m", 8);
+	glutAddMenuEntry("statute.m", 9);
 
 	// Create the menu, this menu becomes the current menu
 	menid = glutCreateMenu(menu);
@@ -77,7 +126,7 @@ void createmenu(void)
 	// Create an entry
 	glutAddMenuEntry("Clear", 1);
 
-	glutAddSubMenu("Draw", submenid);
+	glutAddSubMenu("Select Model", submenid);
 	// Create an entry
 	glutAddMenuEntry("Quit", 0);
 
@@ -112,17 +161,19 @@ void disp(void)
 	glEnable(GL_LIGHT0);
 
 	glPushMatrix();
-	glRotatef(x_angle, 0, 1,0); 
-	glRotatef(y_angle, 1,0,0); 
-	glScalef(scale_size, scale_size, scale_size); 
-	new_model->Render();
+		glRotatef(x_angle, 0, 1,0); 
+		glRotatef(y_angle, 1,0,0); 
+		glScalef(scale_size, scale_size, scale_size); 
+		if (current_model)
+			current_model->Render();
 	glPopMatrix();
 
 	glDisable(GL_LIGHTING);
-	glDisable(GL_LIGHT0);  
+	glDisable(GL_LIGHT0);
 	coordinate->Render();
+	ground->Render();
 	glEnable(GL_LIGHTING);
-	glEnable(GL_LIGHT0);  
+	glEnable(GL_LIGHT0);
 	
 	// swap the buffers
 	glutSwapBuffers(); 
@@ -221,11 +272,15 @@ int main(int argc, char **argv)
 	// put all the menu functions in one nice procedure
 	createmenu();
 
-	new_model = new CModel("bunny.m");
+	// current_model = new CModel("bimba.m");
 	coordinate = new CCoordinate();
+	ground = new CGround(80.0f, 80.0f, 20);
 
 	// set the clearcolor and the callback
-	glClearColor(0.0,0.0,0.0,0.0);
+	glClearColor(	0.1,
+					0.1,
+					0.1,
+					1.0);
 
 	// register your callback functions
 	glutDisplayFunc(disp);

@@ -27,6 +27,13 @@ void CVector3::Normalize()
 	this->z /= l;
 }
 
+void CVector3::Negative()
+{
+	this->x *= -1;
+	this->y *= -1;
+	this->z *= -1;
+}
+
 float CVector3::Length() const
 {
 	return sqrt(this->LengthSqrt());

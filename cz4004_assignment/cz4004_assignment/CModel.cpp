@@ -18,6 +18,27 @@ CModel::CModel(const std::string & file_name)
 	Create();
 }
 
+CModel::~CModel()
+{
+	// Destructor
+
+	// delete min and max vertex
+	if (m_minVertex)
+	{
+		delete m_minVertex;
+		m_minVertex = nullptr;
+	}
+
+	if (m_maxVertex)
+	{
+		delete m_maxVertex;
+		m_maxVertex = nullptr;
+	}
+
+	// delete 
+	// TODO:
+}
+
 void CModel::Create()
 {
 	printf("Start to create the 3D mesh ... \n");
@@ -55,6 +76,7 @@ void CModel::Create()
 		m_faces.push_back(new_face);
 	}
 
+	CalCenterVertex();
 	m_boundingBox.Initialize(this->m_minVertex, this->m_maxVertex);
 
 	FindPairedEdgesForAllEdges();
@@ -177,18 +199,41 @@ void CModel::CalMinMaxVertex(HE_vert * v)
 		m_maxVertex->z = v->coord->z;
 }
 
+void CModel::CalCenterVertex()
+{
+	if (!m_minVertex || !m_maxVertex)
+	{
+		printf("The min vertex and max vertex have not been initialized!");
+		return;
+	}
+
+	if (m_centerVertex)
+	{
+		delete m_centerVertex;
+		m_centerVertex = nullptr;
+	}
+	
+	m_centerVertex = new CVector3(
+		(m_minVertex->x + m_maxVertex->x) * 0.5f,
+		(m_minVertex->y + m_maxVertex->y) * 0.5f,
+		(m_minVertex->z + m_maxVertex->z) * 0.5f);
+
+	m_centerVertex->Negative();
+}
+
 void CModel::ClearCachedData()
 {
 }
 
 void CModel::Render()
 {
+	CObject::Render();
+
 	//for (size_t i = 0; i < m_vertices.size(); ++ i)
 	//{
 	////	glBegin(GL_POINTS);
 	////	glVertex3f(m_vertices[i]->coord->x,m_vertices[i]->coord->y,m_vertices[i]->coord->z);
 	////	glEnd();
-
 	//	glBegin(GL_LINES);
 	//	glVertex3f(m_vertices[i]->coord->x,m_vertices[i]->coord->y,m_vertices[i]->coord->z);
 	//	glVertex3f(	m_vertices[i]->coord->x+m_vertices[i]->normal->x * 0.01,
@@ -197,9 +242,9 @@ void CModel::Render()
 	//	glEnd();
 	//}
 
-	glEnable(GL_NORMALIZE);
+	glPushMatrix();
+	glTranslatef(m_centerVertex->x, m_centerVertex->y, m_centerVertex->z);
 
-	glShadeModel(GL_SMOOTH); // GL_FLAT or GL_SMOOTH
 	for (unsigned int i = 0; i < m_faces.size(); ++ i)
 	{
 		HE_edge * edge = m_faces[i]->edge;
@@ -211,11 +256,9 @@ void CModel::Render()
 		glBegin(GL_TRIANGLES);
 			glNormal3f(n1->x, n1->y, n1->z);
 			glVertex3f(edge->vert->coord->x, edge->vert->coord->y, edge->vert->coord->z);
-			
 			glNormal3f(n2->x, n2->y, n2->z);
 			edge = edge->next;
 			glVertex3f(edge->vert->coord->x, edge->vert->coord->y, edge->vert->coord->z);
-			
 			glNormal3f(n3->x, n3->y, n3->z);
 			edge = edge->next;
 			glVertex3f(edge->vert->coord->x, edge->vert->coord->y, edge->vert->coord->z);
@@ -225,6 +268,8 @@ void CModel::Render()
 	glDisable(GL_LIGHTING);
 	glDisable(GL_LIGHT0);  
 	m_boundingBox.Render();
+
+	glPopMatrix();
 }
 
 void CModel::Update()

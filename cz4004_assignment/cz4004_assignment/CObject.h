@@ -8,10 +8,15 @@ namespace CZ4004
 	class CObject
 	{
 	public:
-		virtual void Render() = 0;
+		virtual void Render()
+		{
+			RenderOption();
+		}
 
-	private:
-		CVector3 m_position;
+		// void SetRenderOption();
+
+	protected:
+		void RenderOption();
 	};
 }
 

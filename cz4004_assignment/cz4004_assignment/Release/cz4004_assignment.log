@@ -1,10 +1,9 @@
-﻿Build started 10/20/2016 10:23:07 AM.
+﻿Build started 11/4/2016 11:33:51 PM.
      1>Project "C:\Users\Wang ZiLi\Desktop\cz4004-assignment-opengl\cz4004_assignment\cz4004_assignment\cz4004_assignment.vcxproj" on node 2 (clean target(s)).
      1>_PrepareForClean:
          Deleting file "Release\cz4004_assignment.lastbuildstate".
-     1>C:\Program Files (x86)\MSBuild\Microsoft.Cpp\v4.0\Microsoft.CppClean.targets(74,5): warning : Access to the path 'C:\WINDOWS\MICROSOFT.NET\FRAMEWORK\V2.0.50727\MSCORWKS.DLL' is denied.
      1>Done Building Project "C:\Users\Wang ZiLi\Desktop\cz4004-assignment-opengl\cz4004_assignment\cz4004_assignment\cz4004_assignment.vcxproj" (clean target(s)).
 
 Build succeeded.
 
-Time Elapsed 00:00:00.01
+Time Elapsed 00:00:00.02

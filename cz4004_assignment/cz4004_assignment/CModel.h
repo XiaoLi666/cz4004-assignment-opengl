@@ -14,6 +14,7 @@ namespace CZ4004
 	{
 	public:
 		CModel(const std::string & file_name);
+		~CModel(); // destructor
 		virtual void Render();
 		virtual void Update();
 
@@ -22,7 +23,8 @@ namespace CZ4004
 		void InitEdge(HE_edge * edge_to_init, HE_vert * vertex, HE_vert * vert_to_pair, HE_face * face, HE_edge * prev, HE_edge * next);
 		void CalNormalForFace(HE_face * face, CVector3 * v1, CVector3 * v2, CVector3 * v3);
 		void CalNormalForAllVertices();
-		void CalMinMaxVertex(HE_vert * v); // TODO: this function seems does not work well
+		void CalMinMaxVertex(HE_vert * v);
+		void CalCenterVertex();
 		void ClearCachedData();
 
 		void BuildPairEdgeStruct(HE_edge * edge);
@@ -32,8 +34,10 @@ namespace CZ4004
 		std::vector<HE_vert *> m_vertices;
 		std::vector<HE_face *> m_faces;
 		std::vector<HE_edge *> m_edges;
+
 		CVector3 * m_minVertex;
 		CVector3 * m_maxVertex;
+		CVector3 * m_centerVertex;
 
 		std::vector<Face_Loaded_Data *> m_facesLoadedData;
 

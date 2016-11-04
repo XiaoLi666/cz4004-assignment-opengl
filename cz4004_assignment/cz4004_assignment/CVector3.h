@@ -10,6 +10,7 @@ namespace CZ4004
 		CVector3(float,float,float);
 		void Set(float,float,float);
 		void Normalize();
+		void Negative();
 		float Length() const;
 		float LengthSqrt() const;
 		CVector3 * CrossProduct(const CVector3 * vector);

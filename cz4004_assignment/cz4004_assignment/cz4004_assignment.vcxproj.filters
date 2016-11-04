@@ -51,6 +51,9 @@
     <ClCompile Include="CCoordinates.cpp">
       <Filter>Header Files\Models</Filter>
     </ClCompile>
+    <ClCompile Include="CObject.cpp">
+      <Filter>Header Files\Engine</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CVector3.h">
