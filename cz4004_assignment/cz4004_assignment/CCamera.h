@@ -12,6 +12,10 @@ namespace CZ4004
 		CCamera();
 		void Update();
 		
+		void Rotate();
+		void Translate();
+		void Zoom();
+
 	private:
 
 	};

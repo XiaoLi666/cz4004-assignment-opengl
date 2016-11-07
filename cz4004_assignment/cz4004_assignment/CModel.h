@@ -26,7 +26,6 @@ namespace CZ4004
 		void CalMinMaxVertex(HE_vert * v);
 		void CalCenterVertex();
 		void ClearCachedData();
-
 		void BuildPairEdgeStruct(HE_edge * edge);
 		void FindPairedEdgesForAllEdges();
 
@@ -44,7 +43,6 @@ namespace CZ4004
 		// TODO: this data structure is wrong
 		// std::map<HE_vert *, HE_edge *> m_edgesToPair;
 		std::map<HE_vert *, std::deque<HE_edge *>> m_edgesToPair;
-
 		CBoundingBox m_boundingBox;
 	};
 }

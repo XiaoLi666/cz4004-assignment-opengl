@@ -1,5 +1,5 @@
 #include <stdlib.h>
-#include "glut.h"
+#include "GL\glut.h"
 #include "CGround.h"
 
 using namespace CZ4004;

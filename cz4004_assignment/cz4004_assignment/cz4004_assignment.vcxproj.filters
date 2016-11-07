@@ -27,9 +27,6 @@
     <ClCompile Include="CMFileLoader.cpp">
       <Filter>Header Files\Engine</Filter>
     </ClCompile>
-    <ClCompile Include="CBoundingBox.cpp">
-      <Filter>Header Files\Engine</Filter>
-    </ClCompile>
     <ClCompile Include="CGround.cpp">
       <Filter>Header Files\Models</Filter>
     </ClCompile>
@@ -54,6 +51,12 @@
     <ClCompile Include="CObject.cpp">
       <Filter>Header Files\Engine</Filter>
     </ClCompile>
+    <ClCompile Include="CBoundingBox.cpp">
+      <Filter>Header Files\Models</Filter>
+    </ClCompile>
+    <ClCompile Include="CUI.cpp">
+      <Filter>Header Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CVector3.h">
@@ -77,9 +80,6 @@
     <ClInclude Include="CMeshDataStruct.h">
       <Filter>Header Files\Engine</Filter>
     </ClInclude>
-    <ClInclude Include="CBoundingBox.h">
-      <Filter>Header Files\Engine</Filter>
-    </ClInclude>
     <ClInclude Include="CCamera.h">
       <Filter>Header Files\Engine</Filter>
     </ClInclude>
@@ -91,6 +91,12 @@
     </ClInclude>
     <ClInclude Include="CLight.h">
       <Filter>Header Files\Models</Filter>
+    </ClInclude>
+    <ClInclude Include="CBoundingBox.h">
+      <Filter>Header Files\Models</Filter>
+    </ClInclude>
+    <ClInclude Include="CUI.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

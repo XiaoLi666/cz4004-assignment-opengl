@@ -1,8 +1,10 @@
 #include <stdlib.h>
-#include "glut.h"
+#include "GL\glut.h"
+#include "Math.h"
 
 #include "CModel.h"
 #include "CMFileLoader.h"
+#include "CUI.h"
 
 using namespace CZ4004;
 using namespace std;
@@ -10,6 +12,7 @@ using namespace std;
 CModel::CModel(const std::string & file_name)
 	: m_minVertex(nullptr)
 	, m_maxVertex(nullptr)
+	, m_centerVertex(nullptr)
 {
 	CMFileLoader::GetInstance()->Load(file_name, m_vertices, m_facesLoadedData);
 	printf("'%s' has been loaded! \n", file_name.c_str());
@@ -229,46 +232,62 @@ void CModel::Render()
 {
 	CObject::Render();
 
-	//for (size_t i = 0; i < m_vertices.size(); ++ i)
-	//{
-	////	glBegin(GL_POINTS);
-	////	glVertex3f(m_vertices[i]->coord->x,m_vertices[i]->coord->y,m_vertices[i]->coord->z);
-	////	glEnd();
-	//	glBegin(GL_LINES);
-	//	glVertex3f(m_vertices[i]->coord->x,m_vertices[i]->coord->y,m_vertices[i]->coord->z);
-	//	glVertex3f(	m_vertices[i]->coord->x+m_vertices[i]->normal->x * 0.01,
-	//				m_vertices[i]->coord->y+m_vertices[i]->normal->y * 0.01,
-	//				m_vertices[i]->coord->z+m_vertices[i]->normal->z * 0.01);
-	//	glEnd();
-	//}
+	int rendering_mode = CUI::GetInstance()->GetRenderingMode();
 
-	glPushMatrix();
-	glTranslatef(m_centerVertex->x, m_centerVertex->y, m_centerVertex->z);
-
-	for (unsigned int i = 0; i < m_faces.size(); ++ i)
+	if (rendering_mode == 2)
 	{
-		HE_edge * edge = m_faces[i]->edge;
+		glPushMatrix();
+		glTranslatef(m_centerVertex->x, m_centerVertex->y, m_centerVertex->z);
+		for (size_t i = 0; i < m_vertices.size(); ++ i)
+		{
+			glBegin(GL_POINTS);
+			glColor3f(0.0f, 0.0f, 0.0f);
+			glVertex3f(m_vertices[i]->coord->x,m_vertices[i]->coord->y,m_vertices[i]->coord->z);
+			glEnd();
+		}
+		m_boundingBox.Render();
+		glPopMatrix();
+	}
+	else if (rendering_mode == 0 || rendering_mode == 1 || rendering_mode == 3)
+	{
+		glPushMatrix();
+		//glTranslatef(m_centerVertex->x, m_centerVertex->y, m_centerVertex->z);
+		glColor3f(0.0f, 0.0f, 0.0f);
+		for (unsigned int i = 0; i < m_faces.size(); ++ i)
+		{
+			HE_edge * edge = m_faces[i]->edge;
+			CVector3 * n1 = edge->vert->normal;
+			CVector3 * n2 = edge->next->vert->normal;
+			CVector3 * n3 = edge->next->next->vert->normal;
+			glBegin(GL_TRIANGLES);
+				glNormal3f(n1->x, n1->y, n1->z);
+				glVertex3f(edge->vert->coord->x, edge->vert->coord->y, edge->vert->coord->z);
+				glNormal3f(n2->x, n2->y, n2->z);
+				edge = edge->next;
+				glVertex3f(edge->vert->coord->x, edge->vert->coord->y, edge->vert->coord->z);
+				glNormal3f(n3->x, n3->y, n3->z);
+				edge = edge->next;
+				glVertex3f(edge->vert->coord->x, edge->vert->coord->y, edge->vert->coord->z);
+			glEnd();
+		}
 
-		CVector3 * n1 = edge->vert->normal;
-		CVector3 * n2 = edge->next->vert->normal;
-		CVector3 * n3 = edge->next->next->vert->normal;
-
-		glBegin(GL_TRIANGLES);
-			glNormal3f(n1->x, n1->y, n1->z);
-			glVertex3f(edge->vert->coord->x, edge->vert->coord->y, edge->vert->coord->z);
-			glNormal3f(n2->x, n2->y, n2->z);
-			edge = edge->next;
-			glVertex3f(edge->vert->coord->x, edge->vert->coord->y, edge->vert->coord->z);
-			glNormal3f(n3->x, n3->y, n3->z);
-			edge = edge->next;
-			glVertex3f(edge->vert->coord->x, edge->vert->coord->y, edge->vert->coord->z);
-		glEnd();
+		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+		glPopMatrix();
 	}
 
 	glDisable(GL_LIGHTING);
 	glDisable(GL_LIGHT0);  
 	m_boundingBox.Render();
 
+	glPushMatrix();
+		glColor3f(0.0f, 0.0f, 0.0f);
+		glTranslatef(m_minVertex->x,m_minVertex->y,m_minVertex->z);
+		glutSolidSphere(1,20,20);
+	glPopMatrix();
+	glPushMatrix();
+		glColor3f(0.0f, 0.0f, 0.0f);
+		glTranslatef(m_maxVertex->x,m_maxVertex->y,m_maxVertex->z);
+		glutSolidSphere(1,20,20);
 	glPopMatrix();
 }
 

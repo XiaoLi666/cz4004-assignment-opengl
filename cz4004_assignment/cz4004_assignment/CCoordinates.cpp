@@ -1,5 +1,5 @@
 #include <stdlib.h>
-#include "glut.h"
+#include "GL\glut.h"
 
 #include "CCoordinates.h"
 

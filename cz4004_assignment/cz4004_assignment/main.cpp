@@ -1,184 +1,175 @@
-/* 
-	What's new in this program?
+#include <string.h>
+#include "GL\glui.h"
+#include "GL\glut.h"
 
-  1. this program supports the mouse-based camera control. 
-       to rotate the object, click the left button and move the mouse
-	   to scale the object, click the middle button and move the mouse in y-direction, i.e., up and down
-
-  2. this program draws the objects (cube, torus and teapot) in three modes, wireframe, solid, edges+solid
-       press 'w', 's', and 'e' to set the display modes 
-       
-*/
-
-#include <iostream>
-#include <glut.h>
-#include <cstdlib>
+int main_window;
+// Define for this assignment
+#include "CUI.h"
+#include "CGround.h"
+#include "CCoordinates.h"
+#include "CModel.h"
 using namespace std;
+using namespace CZ4004;
+CGround * ground = new CGround(80.0f, 80.0f, 20);
+CCoordinate * coordinate = new CCoordinate();
+CModel * model = nullptr;
 
 #define TRANSFORM_NONE    0 
 #define TRANSFORM_ROTATE  1
 #define TRANSFORM_SCALE 2 
-
 #define OBJ_WIREFRAME	0
 #define OBJ_SOLID		1
-#define OBJ_EDGE		2 
-
+#define OBJ_EDGE		2
 static int win;
 static int menid;
 static int submenid;
 static int primitive = 0;
-
 static int press_x, press_y; 
 static float x_angle = 0.0; 
 static float y_angle = 0.0; 
 static float scale_size = 1; 
-
 static int obj_mode = 0;
 static int xform_mode = 0; 
 
-#include "CMFileLoader.h"
-#include "CModel.h"
-#include "CCoordinates.h"
-#include "CGround.h"
-#include "CVector3.h"
-using namespace CZ4004;
-
-CModel * current_model;
-CCoordinate * coordinate;
-CGround * ground;
-
-
-// TODO: going to move this function into a model manager class
-void CreateModel(const string & model_name)
+void CreateModel()
 {
-	if (current_model)
+	int model_id = CUI::GetInstance()->GetModelListboxSelectedId();
+	string model_name = "";
+	switch(model_id)
 	{
-		delete current_model;
-		current_model = nullptr;
-	}
-
-	current_model = new CModel(model_name);
-}
-
-void menu(int value)
-{
-	if (value == 0)
-	{
-		glutDestroyWindow(win);
-		exit(0);
-	}
-	else
-	{
-		primitive=value;
-	}
-
-	switch (value)
-	{
-	case 2: // bimba
-		CreateModel("bimba.m");
+	case 0:
+		model_name = "bimba.m";
 		break;
-	case 3: // bottle
-		CreateModel("bottle.m");
+	case 1:
+		model_name = "bottle.m";
 		break;
-	case 4: // bunny
-		CreateModel("bunny.m");
+	case 2:
+		model_name = "bunny.m";
 		break;
-	case 5: // cap
-		CreateModel("cap.m");
+	case 3:
+		model_name = "cap.m";
 		break;
-	case 6: // eight
-		CreateModel("eight.m");
+	case 4:
+		model_name = "eight.m";
 		break;
-	case 7: // gargoyle
-		CreateModel("gargoyle.m");
+	case 5:
+		model_name = "gargoyle.m";
 		break;
-	case 8: // knot
-		CreateModel("knot.m");
+	case 6:
+		model_name = "knot.m";
 		break;
-	case 9: // status
-		CreateModel("statute.m");
+	case 7:
+		model_name = "statute.m";
 		break;
 	default:break;
 	}
-  
-	// you would want to redraw now
+
+	if (model_name == "")
+	{
+		printf("Error: Invalid model id, cannot create the model1\n");
+		return;
+	}
+
+	model = new CModel(model_name);
+
+	// Reset some global values
+	primitive = 0;
+	x_angle = 0.0; 
+	y_angle = 0.0; 
+	scale_size = 1; 
+	obj_mode = 0;
+	xform_mode = 0;
+}
+
+void DeleteModel()
+{
+	if (!model)
+	{
+		delete model;
+		model = nullptr;
+	}
+}
+
+// Callback functions
+void CUICallBack(int id)
+{
+	switch (id)
+	{
+	case 0:
+		CreateModel();
+		DeleteModel();
+		break;
+	default:
+		break;
+	}
+}
+
+void myGlutIdle(void)
+{
+	if (glutGetWindow() != main_window)
+		glutSetWindow(main_window);
 	glutPostRedisplay();
 }
 
-void createmenu(void)
+void myGlutReshape( int x, int y )
 {
-	// Create a submenu, this has to be done first.
-	submenid = glutCreateMenu(menu);
-
-	// Add sub menu entry
-	glutAddMenuEntry("bimba.m", 2);
-	glutAddMenuEntry("bottle.m", 3);
-	glutAddMenuEntry("bunny.m", 4);
-	glutAddMenuEntry("cap.m", 5);
-	glutAddMenuEntry("eight.m", 6);
-	glutAddMenuEntry("gargoyle.m", 7);
-	glutAddMenuEntry("knot.m", 8);
-	glutAddMenuEntry("statute.m", 9);
-
-	// Create the menu, this menu becomes the current menu
-	menid = glutCreateMenu(menu);
-
-	// Create an entry
-	glutAddMenuEntry("Clear", 1);
-
-	glutAddSubMenu("Select Model", submenid);
-	// Create an entry
-	glutAddMenuEntry("Quit", 0);
-
-	// Let the menu respond on the right mouse button
-	glutAttachMenu(GLUT_RIGHT_BUTTON);
+	float xy_aspect;
+	xy_aspect = (float) x / (float) y;
+	glViewport(0, 0, (GLsizei)x, (GLsizei)y);
+	// GLUI_Master.auto_set_viewport();
+	glutPostRedisplay();
 }
 
-void disp(void)
-{	
-	glEnable(GL_DEPTH_TEST); 
+void myGlutDisplay( void )
+{
+	glClearColor( .9f, .9f, .9f, 1.0f );
+	glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
 
-	// Just clean the screen
-	glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);
+	glMatrixMode( GL_PROJECTION );
+	glLoadIdentity();
+	
+	if (CUI::GetInstance()->GetProjectionMode() == 0)
+	{
+		gluPerspective(60, 1, .1, 200);
+	}
+	else
+	{
+		// glOrtho(-x/20, x/20, -y/20, y/20, 0, 200);
+		// glFrustum(-xy_aspect*.08, xy_aspect*.08, -.08, .08, .1, 15.0);
+		glOrtho(-30, 30, -30, 30, -1, 200);
+	}
 
-	// setup the perspective projection
-	glMatrixMode(GL_PROJECTION); 
-	glLoadIdentity(); 
-	gluPerspective(60, 1, .1, 200);
+	glMatrixMode( GL_MODELVIEW );
+	glLoadIdentity();
+	gluLookAt(60,60,60,0,0,0,0,1,0);
 
-	glMatrixMode(GL_MODELVIEW);
-	glLoadIdentity(); 
-	gluLookAt(15,15,15,0,0,0,0,1,0);  
-
-	GLfloat light_position[] = { 0.0, 20.0, 0.0, 0.0 };  // light position 
+  	GLfloat light_position[] = { 0.0, 20.0, 0.0, 0.0 };  // light position
 	GLfloat white_light[] = { 1.0, 1.0, 1.0, 1.0 };  // light color
-	GLfloat lmodel_ambient[] = { 1.0f, 1.0f, 1.0f, 1.0f };  
+	GLfloat lmodel_ambient[] = { 1.0f, 1.0f, 1.0f, 1.0f };
 	glLightfv(GL_LIGHT0, GL_POSITION, light_position);
 	glLightfv(GL_LIGHT0, GL_DIFFUSE, white_light);
 	glLightfv(GL_LIGHT0, GL_SPECULAR, white_light);
 	glLightModelfv(GL_LIGHT_MODEL_AMBIENT, lmodel_ambient);
+
+	if (CUI::GetInstance()->GetEnableGround()) ground->Render();
+	if (CUI::GetInstance()->GetEnableCoordinate()) coordinate->Render();
+
 	glEnable(GL_LIGHTING);
 	glEnable(GL_LIGHT0);
-
 	glPushMatrix();
-		glRotatef(x_angle, 0, 1,0); 
-		glRotatef(y_angle, 1,0,0); 
-		glScalef(scale_size, scale_size, scale_size); 
-		if (current_model)
-			current_model->Render();
+		// glRotatef(x_angle, 0,1,0);
+		// glRotatef(y_angle, 1,0,0);
+		glScalef(scale_size, scale_size, scale_size);
+		if (model)
+		{
+			model->Render();
+		}
 	glPopMatrix();
-
 	glDisable(GL_LIGHTING);
 	glDisable(GL_LIGHT0);
-	coordinate->Render();
-	ground->Render();
-	glEnable(GL_LIGHTING);
-	glEnable(GL_LIGHT0);
-	
-	// swap the buffers
-	glutSwapBuffers(); 
-}
 
+	glutSwapBuffers();
+}
 
 void mymouse(int button, int state, int x, int y)
 {
@@ -233,63 +224,25 @@ void mymotion(int x, int y)
 	glutPostRedisplay(); 
 }
 
-void mykey(unsigned char key, int x, int y)
+int main(int argc, char* argv[])
 {
-	switch(key) 
-	{
-	case 'w': 
-		cout << "key 'w' is pressed! draw the object in wireframe" << endl;
-		obj_mode = OBJ_WIREFRAME;
-		break; 
-	case 's':
-		cout << "key 's' is pressed! draw the object in solid" << endl;
-		obj_mode = OBJ_SOLID;
-		break;
-	case 'e':
-		cout << "key 'e' is pressed! draw the object in solid+wireframe" << endl;
-		obj_mode = OBJ_EDGE;
-		break;
-	}
+	glutInitDisplayMode( GLUT_RGB | GLUT_DOUBLE | GLUT_DEPTH );
+	glutInitWindowPosition(50, 50);
+	glutInitWindowSize(1280, 800);
 
-	// force the redraw function
-	glutPostRedisplay(); 
-}
-
-
-int main(int argc, char **argv)
-{
-	// normal initialisation
-	glutInit(&argc, argv);
-	// use double buffer to get better results on animation
-	// use depth buffer for hidden surface removal
-	glutInitDisplayMode(GLUT_RGBA | GLUT_DOUBLE | GLUT_DEPTH);
+	main_window = glutCreateWindow( "CZ4004 Programming Assignment" );
 	
-	glutInitWindowSize(800,600);
-	glutInitWindowPosition(100,100);
-
-	win = glutCreateWindow("GLUT Transformation");
-  
-	// put all the menu functions in one nice procedure
-	createmenu();
-
-	// current_model = new CModel("bimba.m");
-	coordinate = new CCoordinate();
-	ground = new CGround(80.0f, 80.0f, 20);
-
-	// set the clearcolor and the callback
-	glClearColor(	0.1,
-					0.1,
-					0.1,
-					1.0);
-
-	// register your callback functions
-	glutDisplayFunc(disp);
 	glutMouseFunc(mymouse);
 	glutMotionFunc(mymotion);
-	glutKeyboardFunc(mykey);
 
-	// enter the main loop
+	glutDisplayFunc( myGlutDisplay );
+	glutReshapeFunc( myGlutReshape );
+
+	glEnable(GL_DEPTH_TEST);
+	CUI::GetInstance()->Initialize(main_window);
+
+	/* We register the idle callback with GLUI, *not* with GLUT */
+	GLUI_Master.set_glutIdleFunc( myGlutIdle );
+	GLUI_Master.set_glutReshapeFunc( myGlutReshape );
 	glutMainLoop();
-
-	return 1;
 }

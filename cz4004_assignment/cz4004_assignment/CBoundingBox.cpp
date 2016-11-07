@@ -1,6 +1,6 @@
 #include <stdlib.h>
 #include <iostream>
-#include "glut.h"
+#include "GL\glut.h"
 
 #include "CBoundingBox.h"
 
@@ -41,7 +41,7 @@ void CBoundingBox::Render()
 
 	// Method 2: Using AABB bounding box
 	glPushMatrix();
-		glColor3f(1.0f,1.0f,1.0f);
+		glColor3f(0.0f,0.0f,0.0f);
 		glBegin(GL_LINES);
 		glVertex3f(m_coordinates[0].x, m_coordinates[0].y, m_coordinates[0].z);
 		glVertex3f(m_coordinates[1].x, m_coordinates[1].y, m_coordinates[1].z);
@@ -49,7 +49,7 @@ void CBoundingBox::Render()
 	glPopMatrix();
 
 	glPushMatrix();
-		glColor3f(1.0f,1.0f,1.0f);
+		glColor3f(0.0f,0.0f,0.0f);
 		glBegin(GL_LINES);
 		glVertex3f(m_coordinates[1].x, m_coordinates[1].y, m_coordinates[1].z);
 		glVertex3f(m_coordinates[2].x, m_coordinates[2].y, m_coordinates[2].z);
@@ -57,7 +57,7 @@ void CBoundingBox::Render()
 	glPopMatrix();
 
 	glPushMatrix();
-		glColor3f(1.0f,1.0f,1.0f);
+		glColor3f(0.0f,0.0f,0.0f);
 		glBegin(GL_LINES);
 		glVertex3f(m_coordinates[2].x, m_coordinates[2].y, m_coordinates[2].z);
 		glVertex3f(m_coordinates[3].x, m_coordinates[3].y, m_coordinates[3].z);
@@ -65,7 +65,7 @@ void CBoundingBox::Render()
 	glPopMatrix();
 
 	glPushMatrix();
-		glColor3f(1.0f,1.0f,1.0f);
+		glColor3f(0.0f,0.0f,0.0f);
 		glBegin(GL_LINES);
 		glVertex3f(m_coordinates[3].x, m_coordinates[3].y, m_coordinates[3].z);
 		glVertex3f(m_coordinates[0].x, m_coordinates[0].y, m_coordinates[0].z);
@@ -73,7 +73,7 @@ void CBoundingBox::Render()
 	glPopMatrix();
 
 	glPushMatrix();
-		glColor3f(1.0f,1.0f,1.0f);
+		glColor3f(0.0f,0.0f,0.0f);
 		glBegin(GL_LINES);
 		glVertex3f(m_coordinates[4].x, m_coordinates[4].y, m_coordinates[4].z);
 		glVertex3f(m_coordinates[5].x, m_coordinates[5].y, m_coordinates[5].z);
@@ -81,7 +81,7 @@ void CBoundingBox::Render()
 	glPopMatrix();
 
 	glPushMatrix();
-		glColor3f(1.0f,1.0f,1.0f);
+		glColor3f(0.0f,0.0f,0.0f);
 		glBegin(GL_LINES);
 		glVertex3f(m_coordinates[5].x, m_coordinates[5].y, m_coordinates[5].z);
 		glVertex3f(m_coordinates[6].x, m_coordinates[6].y, m_coordinates[6].z);
@@ -89,7 +89,7 @@ void CBoundingBox::Render()
 	glPopMatrix();
 
 	glPushMatrix();
-		glColor3f(1.0f,1.0f,1.0f);
+		glColor3f(0.0f,0.0f,0.0f);
 		glBegin(GL_LINES);
 		glVertex3f(m_coordinates[6].x, m_coordinates[6].y, m_coordinates[6].z);
 		glVertex3f(m_coordinates[7].x, m_coordinates[7].y, m_coordinates[7].z);
@@ -97,7 +97,7 @@ void CBoundingBox::Render()
 	glPopMatrix();
 
 	glPushMatrix();
-		glColor3f(1.0f,1.0f,1.0f);
+		glColor3f(0.0f,0.0f,0.0f);
 		glBegin(GL_LINES);
 		glVertex3f(m_coordinates[7].x, m_coordinates[7].y, m_coordinates[7].z);
 		glVertex3f(m_coordinates[4].x, m_coordinates[4].y, m_coordinates[4].z);
@@ -105,7 +105,7 @@ void CBoundingBox::Render()
 	glPopMatrix();
 
 	glPushMatrix();
-		glColor3f(1.0f,1.0f,1.0f);
+		glColor3f(0.0f,0.0f,0.0f);
 		glBegin(GL_LINES);
 		glVertex3f(m_coordinates[0].x, m_coordinates[0].y, m_coordinates[0].z);
 		glVertex3f(m_coordinates[4].x, m_coordinates[4].y, m_coordinates[4].z);
@@ -113,7 +113,7 @@ void CBoundingBox::Render()
 	glPopMatrix();
 
 	glPushMatrix();
-		glColor3f(1.0f,1.0f,1.0f);
+		glColor3f(0.0f,0.0f,0.0f);
 		glBegin(GL_LINES);
 		glVertex3f(m_coordinates[1].x, m_coordinates[1].y, m_coordinates[1].z);
 		glVertex3f(m_coordinates[5].x, m_coordinates[5].y, m_coordinates[5].z);
@@ -121,7 +121,7 @@ void CBoundingBox::Render()
 	glPopMatrix();
 
 	glPushMatrix();
-		glColor3f(1.0f,1.0f,1.0f);
+		glColor3f(0.0f,0.0f,0.0f);
 		glBegin(GL_LINES);
 		glVertex3f(m_coordinates[2].x, m_coordinates[2].y, m_coordinates[2].z);
 		glVertex3f(m_coordinates[6].x, m_coordinates[6].y, m_coordinates[6].z);
@@ -129,7 +129,7 @@ void CBoundingBox::Render()
 	glPopMatrix();
 
 	glPushMatrix();
-		glColor3f(1.0f,1.0f,1.0f);
+		glColor3f(0.0f,0.0f,0.0f);
 		glBegin(GL_LINES);
 		glVertex3f(m_coordinates[3].x, m_coordinates[3].y, m_coordinates[3].z);
 		glVertex3f(m_coordinates[7].x, m_coordinates[7].y, m_coordinates[7].z);
