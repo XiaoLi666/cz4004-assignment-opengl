@@ -26,6 +26,7 @@ namespace CZ4004
 		inline const int GetEnableBoundingBox() const { return m_enableBoundingBox; }
 		inline const int GetEnableBackFaceCulling() const { return m_enableBackFaceCulling; }
 		inline const int GetModelListboxSelectedId() const { return m_modelListbox->get_int_val(); }
+		inline const int GetEnableColorfulLight() const { return m_enableColorfulLights; }
 
 	private:
 		CUI();
@@ -41,6 +42,7 @@ namespace CZ4004
 		int m_enableCoordinate;
 		int m_enableBoundingBox;
 		int m_enableBackFaceCulling;
+		int m_enableColorfulLights;
 
 		GLUI * m_subWindow;
 		GLUI_Listbox * m_modelListbox;

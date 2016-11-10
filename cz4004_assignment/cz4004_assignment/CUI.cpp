@@ -17,6 +17,7 @@ CUI::CUI()
 	, m_enableCoordinate(1)
 	, m_enableBoundingBox(1)
 	, m_enableBackFaceCulling(1)
+	, m_enableColorfulLights(0)
 	, m_subWindow(nullptr)
 	, m_modelListbox(nullptr)
 {
@@ -64,18 +65,7 @@ void CUI::Initialize(int main_window)
 	m_subWindow->add_checkbox("Coordinate", &m_enableCoordinate);
 	m_subWindow->add_checkbox("BoundingBox", &m_enableBoundingBox);
 	m_subWindow->add_checkbox("Back Face Culling", &m_enableBackFaceCulling);
+	m_subWindow->add_checkbox("Colorful Lights", &m_enableColorfulLights);
 
 	m_subWindow->add_button("Exit Viewer",0,(GLUI_Update_CB)exit);
-
-	//glui->add_checkbox( "Wireframe", &wireframe );
-	//GLUI_Spinner *segment_spinner = glui->add_spinner("Segments:", GLUI_SPINNER_INT, &segments);
-	//segment_spinner->set_int_limits( 3, 100 );
-	//glui->add_statictext("Example 2");
-	//glui->add_separator();
-	//GLUI_Panel *obj_panel = m_subWindow->add_panel ("Projection Mode");
-	////glui->add_button("Import",0,(GLUI_Update_CB)exit);
-	//GLUI_RadioGroup * projection_mode = m_subWindow->add_radiogroup_to_panel(obj_panel,&m_projectionMode);
-	//m_subWindow->add_radiobutton_to_group(projection_mode,"Perspective");
-	//m_subWindow->add_radiobutton_to_group(projection_mode,"Orthographic");
-	//GLUI_Rotation *arcball = glui->add_rotation("ball (doesn't do anything)");
 }

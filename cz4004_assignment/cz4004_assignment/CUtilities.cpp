@@ -22,3 +22,8 @@ void CUtilities::SplitString(const std::string & full_string, const std::string 
         sub_strings.push_back(updated_string);
     }
 }
+
+float CUtilities::Degree2Radian(float degree)
+{
+	return degree / 180.0f * 3.14f;
+}

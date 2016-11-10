@@ -5,6 +5,7 @@
 #include "CModel.h"
 #include "CMFileLoader.h"
 #include "CUI.h"
+#include "CUtilities.h"
 
 using namespace CZ4004;
 using namespace std;
@@ -52,9 +53,9 @@ void CModel::Create()
 		HE_vert * v2 = m_vertices[m_facesLoadedData[i]->vertex2];
 		HE_vert * v3 = m_vertices[m_facesLoadedData[i]->vertex3];
 
-		CalMinMaxVertex(v1);
-		CalMinMaxVertex(v2);
-		CalMinMaxVertex(v3);
+		CalMinMaxVertex(v1->coord);
+		CalMinMaxVertex(v2->coord);
+		CalMinMaxVertex(v3->coord);
 
 		HE_face * new_face = new HE_face();
 		CalNormalForFace(new_face, v1->coord, v2->coord, v3->coord);
@@ -178,28 +179,28 @@ void CModel::CalNormalForAllVertices()
 }
 
 // TODO: This function is totally wrong, need to redo this function
-void CModel::CalMinMaxVertex(HE_vert * v)
+void CModel::CalMinMaxVertex(CVector3 * v)
 {
 	if (!m_minVertex)
-		m_minVertex = new CVector3(v->coord->x, v->coord->y, v->coord->z);
+		m_minVertex = new CVector3(v->x, v->y, v->z);
 	if (!m_maxVertex)
-		m_maxVertex = new CVector3(v->coord->x, v->coord->y, v->coord->z);
+		m_maxVertex = new CVector3(v->x, v->y, v->z);
 
 	// Calculate the Min
-	if (m_minVertex->x > v->coord->x)
-		m_minVertex->x = v->coord->x;
-	if (m_minVertex->y > v->coord->y)
-		m_minVertex->y = v->coord->y;
-	if (m_minVertex->z > v->coord->z)
-		m_minVertex->z = v->coord->z;
+	if (m_minVertex->x > v->x)
+		m_minVertex->x = v->x;
+	if (m_minVertex->y > v->y)
+		m_minVertex->y = v->y;
+	if (m_minVertex->z > v->z)
+		m_minVertex->z = v->z;
 
 	// Calculate the Max
-	if (m_maxVertex->x < v->coord->x)
-		m_maxVertex->x = v->coord->x;
-	if (m_maxVertex->y < v->coord->y)
-		m_maxVertex->y = v->coord->y;
-	if (m_maxVertex->z < v->coord->z)
-		m_maxVertex->z = v->coord->z;
+	if (m_maxVertex->x < v->x)
+		m_maxVertex->x = v->x;
+	if (m_maxVertex->y < v->y)
+		m_maxVertex->y = v->y;
+	if (m_maxVertex->z < v->z)
+		m_maxVertex->z = v->z;
 }
 
 void CModel::CalCenterVertex()
@@ -222,6 +223,19 @@ void CModel::CalCenterVertex()
 		(m_minVertex->z + m_maxVertex->z) * 0.5f);
 
 	m_centerVertex->Negative();
+
+	for (unsigned int i = 0; i < m_vertices.size(); ++ i)
+	{
+		m_vertices[i]->coord->x += m_centerVertex->x;
+		m_vertices[i]->coord->y += m_centerVertex->y;
+		m_vertices[i]->coord->z += m_centerVertex->z;
+	}
+	m_minVertex->x += m_centerVertex->x;
+	m_minVertex->y += m_centerVertex->y;
+	m_minVertex->z += m_centerVertex->z;
+	m_maxVertex->x += m_centerVertex->x;
+	m_maxVertex->y += m_centerVertex->y;
+	m_maxVertex->z += m_centerVertex->z;
 }
 
 void CModel::ClearCachedData()
@@ -237,7 +251,7 @@ void CModel::Render()
 	if (rendering_mode == 2)
 	{
 		glPushMatrix();
-		glTranslatef(m_centerVertex->x, m_centerVertex->y, m_centerVertex->z);
+		//glTranslatef(m_centerVertex->x, m_centerVertex->y, m_centerVertex->z);
 		for (size_t i = 0; i < m_vertices.size(); ++ i)
 		{
 			glBegin(GL_POINTS);
@@ -245,7 +259,9 @@ void CModel::Render()
 			glVertex3f(m_vertices[i]->coord->x,m_vertices[i]->coord->y,m_vertices[i]->coord->z);
 			glEnd();
 		}
-		m_boundingBox.Render();
+		
+		if (CUI::GetInstance()->GetEnableBoundingBox()) m_boundingBox.Render();
+
 		glPopMatrix();
 	}
 	else if (rendering_mode == 0 || rendering_mode == 1 || rendering_mode == 3)
@@ -271,27 +287,46 @@ void CModel::Render()
 			glEnd();
 		}
 
+		glDisable(GL_LIGHTING);
+		glDisable(GL_LIGHT0);
+
+		if (CUI::GetInstance()->GetEnableBoundingBox()) m_boundingBox.Render();
+
 		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 		glPopMatrix();
 	}
-
-	glDisable(GL_LIGHTING);
-	glDisable(GL_LIGHT0);  
-	m_boundingBox.Render();
-
-	glPushMatrix();
-		glColor3f(0.0f, 0.0f, 0.0f);
-		glTranslatef(m_minVertex->x,m_minVertex->y,m_minVertex->z);
-		glutSolidSphere(1,20,20);
-	glPopMatrix();
-	glPushMatrix();
-		glColor3f(0.0f, 0.0f, 0.0f);
-		glTranslatef(m_maxVertex->x,m_maxVertex->y,m_maxVertex->z);
-		glutSolidSphere(1,20,20);
-	glPopMatrix();
 }
 
 void CModel::Update()
 {
 	// TODO:
+}
+
+void CModel::SetRotation(float x_angle, float y_angle)
+{
+	delete m_minVertex; m_minVertex = nullptr;
+	delete m_maxVertex; m_maxVertex = nullptr;
+
+	float x_radian = CUtilities::Degree2Radian(x_angle);
+	float y_radian = CUtilities::Degree2Radian(y_angle);
+
+	CVector3 * cache_vertex = new CVector3();
+
+	for (unsigned int i =  0; i < m_vertices.size(); ++ i)
+	{
+		// Rotate along the y axis
+		cache_vertex->x = m_vertices[i]->coord->x * cos(x_radian) + m_vertices[i]->coord->z * sin(x_radian);
+		cache_vertex->z = m_vertices[i]->coord->x * -sin(x_radian) + m_vertices[i]->coord->z * cos(x_radian);
+		m_vertices[i]->coord->x = cache_vertex->x;
+		m_vertices[i]->coord->z = cache_vertex->z;
+		// Rotate along the x axis
+		cache_vertex->y = m_vertices[i]->coord->y * cos(y_radian) + m_vertices[i]->coord->z * -sin(y_radian);
+		cache_vertex->z = m_vertices[i]->coord->y * sin(y_radian) + m_vertices[i]->coord->z * cos(y_radian);
+		m_vertices[i]->coord->y = cache_vertex->y;
+		m_vertices[i]->coord->z = cache_vertex->z;
+		CalMinMaxVertex(cache_vertex);
+	}
+	m_boundingBox.Initialize(this->m_minVertex, this->m_maxVertex);
+
+	delete cache_vertex;
 }

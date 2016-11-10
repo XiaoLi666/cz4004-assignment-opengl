@@ -14,19 +14,26 @@ CGround * ground = new CGround(80.0f, 80.0f, 20);
 CCoordinate * coordinate = new CCoordinate();
 CModel * model = nullptr;
 
-#define TRANSFORM_NONE    0 
-#define TRANSFORM_ROTATE  1
-#define TRANSFORM_SCALE 2 
-#define OBJ_WIREFRAME	0
-#define OBJ_SOLID		1
-#define OBJ_EDGE		2
+#define TRANSFORM_NONE		0
+#define TRANSFORM_ROTATE	1
+#define TRANSFORM_SCALE		2
+#define TRANSFORM_TRANSLATE 3
+
 static int win;
 static int menid;
 static int submenid;
 static int primitive = 0;
-static int press_x, press_y; 
-static float x_angle = 0.0; 
+
+
+static int press_x, press_y;
+
+static float x_trans = 0.0;
+static float y_trans = 0.0;
+
+static float x_angle = 0.0;
+static float x_angle_prev = 0.0;
 static float y_angle = 0.0; 
+static float y_angle_prev = 0.0;
 static float scale_size = 1; 
 static int obj_mode = 0;
 static int xform_mode = 0; 
@@ -74,9 +81,13 @@ void CreateModel()
 
 	// Reset some global values
 	primitive = 0;
-	x_angle = 0.0; 
-	y_angle = 0.0; 
-	scale_size = 1; 
+	x_angle = 0.0;
+	y_angle = 0.0;
+	x_trans = 0.0;
+	y_trans = 0.0;
+	x_angle_prev = 0.0;
+	y_angle_prev = 0.0;
+	scale_size = 1;
 	obj_mode = 0;
 	xform_mode = 0;
 }
@@ -143,12 +154,32 @@ void myGlutDisplay( void )
 	glLoadIdentity();
 	gluLookAt(60,60,60,0,0,0,0,1,0);
 
-  	GLfloat light_position[] = { 0.0, 20.0, 0.0, 0.0 };  // light position
-	GLfloat white_light[] = { 1.0, 1.0, 1.0, 1.0 };  // light color
+  	GLfloat light_position_0[] = { 0.0, 0.0, 10.0, 0.0 };  // light position
+	GLfloat light_position_1[] = { 0.0, 0.0, -10.0, 0.0 };  // light position
+	GLfloat white_light[] = { 1.0, 1.0, 1.0, 1.0 };  // light color white
+	GLfloat green_light[] = { 0.0, 0.0, 1.0, 1.0 };  // light color green
+	GLfloat blue_light[] = { 0.0, 1.0, 0.0, 1.0 };  // light color blue
 	GLfloat lmodel_ambient[] = { 1.0f, 1.0f, 1.0f, 1.0f };
-	glLightfv(GL_LIGHT0, GL_POSITION, light_position);
-	glLightfv(GL_LIGHT0, GL_DIFFUSE, white_light);
-	glLightfv(GL_LIGHT0, GL_SPECULAR, white_light);
+	
+	if (CUI::GetInstance()->GetEnableColorfulLight())
+	{
+		glLightfv(GL_LIGHT0, GL_POSITION, light_position_0);
+		glLightfv(GL_LIGHT0, GL_DIFFUSE, green_light);
+		glLightfv(GL_LIGHT0, GL_SPECULAR, green_light);
+		glLightfv(GL_LIGHT1, GL_POSITION, light_position_1);
+		glLightfv(GL_LIGHT1, GL_DIFFUSE, blue_light);
+		glLightfv(GL_LIGHT1, GL_SPECULAR, blue_light);
+	}
+	else
+	{
+		glLightfv(GL_LIGHT0, GL_POSITION, light_position_0);
+		glLightfv(GL_LIGHT0, GL_DIFFUSE, white_light);
+		glLightfv(GL_LIGHT0, GL_SPECULAR, white_light);
+		glLightfv(GL_LIGHT1, GL_POSITION, light_position_1);
+		glLightfv(GL_LIGHT1, GL_DIFFUSE, white_light);
+		glLightfv(GL_LIGHT1, GL_SPECULAR, white_light);
+	}
+
 	glLightModelfv(GL_LIGHT_MODEL_AMBIENT, lmodel_ambient);
 
 	if (CUI::GetInstance()->GetEnableGround()) ground->Render();
@@ -156,34 +187,37 @@ void myGlutDisplay( void )
 
 	glEnable(GL_LIGHTING);
 	glEnable(GL_LIGHT0);
+	glEnable(GL_LIGHT1);
 	glPushMatrix();
 		// glRotatef(x_angle, 0,1,0);
 		// glRotatef(y_angle, 1,0,0);
+		glTranslatef(x_trans, 0, y_trans);
 		glScalef(scale_size, scale_size, scale_size);
 		if (model)
-		{
 			model->Render();
-		}
 	glPopMatrix();
 	glDisable(GL_LIGHTING);
 	glDisable(GL_LIGHT0);
+	glDisable(GL_LIGHT1);
 
 	glutSwapBuffers();
 }
 
 void mymouse(int button, int state, int x, int y)
 {
-	if (state == GLUT_DOWN) 
+	if (state == GLUT_DOWN) // press down mouse button
 	{
 		press_x = x; press_y = y; 
 		if (button == GLUT_LEFT_BUTTON)
 			xform_mode = TRANSFORM_ROTATE; 
-		else if (button == GLUT_MIDDLE_BUTTON) 
+		else if (button == GLUT_RIGHT_BUTTON) 
 			xform_mode = TRANSFORM_SCALE; 
+		else if (button == GLUT_MIDDLE_BUTTON)
+			xform_mode = TRANSFORM_TRANSLATE;
 	}
-	else if (state == GLUT_UP) 
+	else if (state == GLUT_UP) // release mouse button
 	{
-		xform_mode = TRANSFORM_NONE; 
+		xform_mode = TRANSFORM_NONE;
 	}
 }
 
@@ -191,23 +225,18 @@ void mymotion(int x, int y)
 {
 	if (xform_mode == TRANSFORM_ROTATE) 
 	{
-		x_angle += (x - press_x)/5.0; 
+		x_angle += (x-press_x)/5.0;
+		if (x_angle > 180) x_angle -= 360;
+		else if (x_angle <-180) x_angle += 360;
+     	press_x = x;
 
-		if (x_angle > 180) 
-			x_angle -= 360; 
-		else if (x_angle <-180) 
-			x_angle += 360; 
-      
-		press_x = x; 
-	   
-		y_angle += (y - press_y)/5.0; 
+		y_angle += (y - press_y) / 5.0;
+		if (y_angle > 180) y_angle -= 360;
+		else if (y_angle <-180) y_angle += 360;
+		press_y = y;
 
-		if (y_angle > 180) 
-			y_angle -= 360; 
-		else if (y_angle <-180) 
-			y_angle += 360; 
-      
-		press_y = y; 
+		model->SetRotation(x_angle - x_angle_prev, y_angle - y_angle_prev);
+		x_angle_prev = x_angle; y_angle_prev = y_angle;
     }
 	else if (xform_mode == TRANSFORM_SCALE)
 	{
@@ -219,6 +248,18 @@ void mymotion(int x, int y)
 			scale_size = old_size; 
 		press_y = y; 
     }
+	else if (xform_mode == TRANSFORM_TRANSLATE)
+	{
+		x_trans += (x-press_x)/5.0;
+		if (x_trans > 180) x_trans -= 360;
+		else if (x_trans <-180) x_trans += 360;
+     	press_x = x;
+
+		y_trans += (y - press_y) / 5.0;
+		if (y_trans > 180) y_trans -= 360;
+		else if (y_trans <-180) y_trans += 360;
+		press_y = y;
+	}
 
 	// force the redraw function
 	glutPostRedisplay(); 

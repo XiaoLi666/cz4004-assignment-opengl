@@ -11,6 +11,7 @@ namespace CZ4004
 	public:
 		static std::string directory;
 		static void SplitString(const std::string & full_string, const std::string & token, std::vector<std::string> & sub_strings);
+		static float Degree2Radian(float degree);
 	};
 }
 

@@ -18,12 +18,14 @@ namespace CZ4004
 		virtual void Render();
 		virtual void Update();
 
+		void SetRotation(float x_angle, float y_angle);
+
 	private:
 		void Create();
 		void InitEdge(HE_edge * edge_to_init, HE_vert * vertex, HE_vert * vert_to_pair, HE_face * face, HE_edge * prev, HE_edge * next);
 		void CalNormalForFace(HE_face * face, CVector3 * v1, CVector3 * v2, CVector3 * v3);
 		void CalNormalForAllVertices();
-		void CalMinMaxVertex(HE_vert * v);
+		void CalMinMaxVertex(CVector3 * v);
 		void CalCenterVertex();
 		void ClearCachedData();
 		void BuildPairEdgeStruct(HE_edge * edge);
