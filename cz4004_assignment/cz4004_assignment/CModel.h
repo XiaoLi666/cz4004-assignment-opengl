@@ -4,19 +4,18 @@
 #include <vector>
 #include <map>
 #include <deque>
-#include "CMovableObject.h"
+#include "CObject.h"
 #include "CMeshDataStruct.h"
 #include "CBoundingBox.h"
 
 namespace CZ4004
 {
-	class CModel : public CMovableObject
+	class CModel : public CObject
 	{
 	public:
 		CModel(const std::string & file_name);
 		~CModel(); // destructor
 		virtual void Render();
-		virtual void Update();
 
 		void SetRotation(float x_angle, float y_angle);
 
@@ -41,9 +40,6 @@ namespace CZ4004
 		CVector3 * m_centerVertex;
 
 		std::vector<Face_Loaded_Data *> m_facesLoadedData;
-
-		// TODO: this data structure is wrong
-		// std::map<HE_vert *, HE_edge *> m_edgesToPair;
 		std::map<HE_vert *, std::deque<HE_edge *>> m_edgesToPair;
 		CBoundingBox m_boundingBox;
 	};

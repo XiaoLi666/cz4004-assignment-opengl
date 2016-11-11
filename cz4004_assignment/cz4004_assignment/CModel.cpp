@@ -24,23 +24,43 @@ CModel::CModel(const std::string & file_name)
 
 CModel::~CModel()
 {
-	// Destructor
-
 	// delete min and max vertex
 	if (m_minVertex)
 	{
 		delete m_minVertex;
 		m_minVertex = nullptr;
 	}
-
 	if (m_maxVertex)
 	{
 		delete m_maxVertex;
 		m_maxVertex = nullptr;
 	}
+	if (m_centerVertex)
+	{
+		delete m_centerVertex;
+		m_centerVertex = nullptr;
+	}
 
 	// delete 
-	// TODO:
+	for (unsigned int i = 0; i < m_vertices.size(); ++ i)
+	{
+		delete m_vertices[i];
+		m_vertices[i] = nullptr;
+	}
+	for (unsigned int i = 0; i < m_faces.size(); ++ i)
+	{
+		delete m_faces[i];
+		m_faces[i] = nullptr;
+	}
+	for (unsigned int i = 0; i < m_edges.size(); ++ i)
+	{
+		delete m_edges[i];
+		m_edges[i] = nullptr;
+	}
+
+	m_vertices.empty();
+	m_faces.empty();
+	m_edges.empty();
 }
 
 void CModel::Create()
@@ -260,7 +280,7 @@ void CModel::Render()
 			glEnd();
 		}
 		
-		if (CUI::GetInstance()->GetEnableBoundingBox()) m_boundingBox.Render();
+		if (CUI::GetInstance()->GetShowBoundingBox()) m_boundingBox.Render();
 
 		glPopMatrix();
 	}
@@ -290,20 +310,18 @@ void CModel::Render()
 		glDisable(GL_LIGHTING);
 		glDisable(GL_LIGHT0);
 
-		if (CUI::GetInstance()->GetEnableBoundingBox()) m_boundingBox.Render();
+		if (CUI::GetInstance()->GetShowBoundingBox()) m_boundingBox.Render();
 
 		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 		glPopMatrix();
 	}
 }
 
-void CModel::Update()
-{
-	// TODO:
-}
-
 void CModel::SetRotation(float x_angle, float y_angle)
 {
+	if (!CUI::GetInstance()->GetEnableBoundingBox())
+		return;
+
 	delete m_minVertex; m_minVertex = nullptr;
 	delete m_maxVertex; m_maxVertex = nullptr;
 

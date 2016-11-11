@@ -23,6 +23,7 @@ namespace CZ4004
 		inline const int GetRenderingMode() const { return m_renderingMode; }
 		inline const int GetEnableGround() const { return m_enableGround; }
 		inline const int GetEnableCoordinate() const { return m_enableCoordinate; }
+		inline const int GetShowBoundingBox() const { return m_showBoundingBox; }
 		inline const int GetEnableBoundingBox() const { return m_enableBoundingBox; }
 		inline const int GetEnableBackFaceCulling() const { return m_enableBackFaceCulling; }
 		inline const int GetModelListboxSelectedId() const { return m_modelListbox->get_int_val(); }
@@ -40,6 +41,7 @@ namespace CZ4004
 		int m_renderingMode;
 		int m_enableGround;
 		int m_enableCoordinate;
+		int m_showBoundingBox;
 		int m_enableBoundingBox;
 		int m_enableBackFaceCulling;
 		int m_enableColorfulLights;

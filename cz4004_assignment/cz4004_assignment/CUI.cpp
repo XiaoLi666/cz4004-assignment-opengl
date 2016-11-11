@@ -15,6 +15,7 @@ CUI::CUI()
 	, m_renderingMode(0)
 	, m_enableGround(1)
 	, m_enableCoordinate(1)
+	, m_showBoundingBox(1)
 	, m_enableBoundingBox(1)
 	, m_enableBackFaceCulling(1)
 	, m_enableColorfulLights(0)
@@ -63,7 +64,8 @@ void CUI::Initialize(int main_window)
 
 	m_subWindow->add_checkbox("Ground", &m_enableGround);
 	m_subWindow->add_checkbox("Coordinate", &m_enableCoordinate);
-	m_subWindow->add_checkbox("BoundingBox", &m_enableBoundingBox);
+	m_subWindow->add_checkbox("Show BoundingBox", &m_showBoundingBox);
+	m_subWindow->add_checkbox("Enable BoundingBox", &m_enableBoundingBox);
 	m_subWindow->add_checkbox("Back Face Culling", &m_enableBackFaceCulling);
 	m_subWindow->add_checkbox("Colorful Lights", &m_enableColorfulLights);
 

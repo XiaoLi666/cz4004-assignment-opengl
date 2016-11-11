@@ -141,13 +141,13 @@ void myGlutDisplay( void )
 	
 	if (CUI::GetInstance()->GetProjectionMode() == 0)
 	{
-		gluPerspective(60, 1, .1, 200);
+		gluPerspective(60, 1, .1, 500);
 	}
 	else
 	{
 		// glOrtho(-x/20, x/20, -y/20, y/20, 0, 200);
 		// glFrustum(-xy_aspect*.08, xy_aspect*.08, -.08, .08, .1, 15.0);
-		glOrtho(-30, 30, -30, 30, -1, 200);
+		glOrtho(-50, 50, -50, 50, -1, 200);
 	}
 
 	glMatrixMode( GL_MODELVIEW );
@@ -189,8 +189,11 @@ void myGlutDisplay( void )
 	glEnable(GL_LIGHT0);
 	glEnable(GL_LIGHT1);
 	glPushMatrix();
-		// glRotatef(x_angle, 0,1,0);
-		// glRotatef(y_angle, 1,0,0);
+		if (!CUI::GetInstance()->GetEnableBoundingBox())
+		{
+			glRotatef(x_angle, 0,1,0);
+			glRotatef(y_angle, 1,0,0);
+		}
 		glTranslatef(x_trans, 0, y_trans);
 		glScalef(scale_size, scale_size, scale_size);
 		if (model)

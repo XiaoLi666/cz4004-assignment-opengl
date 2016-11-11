@@ -14,6 +14,7 @@ void CMFileLoader::Load(const std::string & file_name,
 {
 	string name;
 	ifstream myfile;
+
 	myfile.open((CUtilities::directory+file_name).c_str());
 	
 	if (myfile.is_open())

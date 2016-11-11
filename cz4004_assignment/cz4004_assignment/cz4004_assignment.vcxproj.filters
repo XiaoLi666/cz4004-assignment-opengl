@@ -39,12 +39,6 @@
     <ClCompile Include="CUtilities.cpp">
       <Filter>Header Files\Engine</Filter>
     </ClCompile>
-    <ClCompile Include="CLight.cpp">
-      <Filter>Header Files\Models</Filter>
-    </ClCompile>
-    <ClCompile Include="CCamera.cpp">
-      <Filter>Header Files\Engine</Filter>
-    </ClCompile>
     <ClCompile Include="CCoordinates.cpp">
       <Filter>Header Files\Models</Filter>
     </ClCompile>
@@ -71,25 +65,16 @@
     <ClInclude Include="CObject.h">
       <Filter>Header Files\Engine</Filter>
     </ClInclude>
-    <ClInclude Include="CMovableObject.h">
-      <Filter>Header Files\Engine</Filter>
-    </ClInclude>
     <ClInclude Include="CMFileLoader.h">
       <Filter>Header Files\Engine</Filter>
     </ClInclude>
     <ClInclude Include="CMeshDataStruct.h">
       <Filter>Header Files\Engine</Filter>
     </ClInclude>
-    <ClInclude Include="CCamera.h">
-      <Filter>Header Files\Engine</Filter>
-    </ClInclude>
     <ClInclude Include="CUtilities.h">
       <Filter>Header Files\Engine</Filter>
     </ClInclude>
     <ClInclude Include="CCoordinates.h">
-      <Filter>Header Files\Models</Filter>
-    </ClInclude>
-    <ClInclude Include="CLight.h">
       <Filter>Header Files\Models</Filter>
     </ClInclude>
     <ClInclude Include="CBoundingBox.h">
